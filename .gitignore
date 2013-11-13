@@ -1,0 +1,36 @@
+# Django stuff
+*.log
+*.pot
+*.pyc
+local_settings.py
+config.cfg
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+var
+sdist
+develop-eggs
+.installed.cfg
+MANIFEST
+
+envs/*
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+
+# Eclipse
+.project
+.pydevproject
+
+# OS files
+.DS_Store
+*.swp
