@@ -6,6 +6,8 @@
 import logger
 import notify
 
+__version__ = '0.1dev'
+
 def get_client(type_, developerkey='', application=''):
     """Get a pushnotify client of the specified type.
 
