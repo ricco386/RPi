@@ -17,11 +17,11 @@ class Client():
         # Setup logging
         logging.basicConfig(**logconfig)
 
-    def alert(self, message):
+    def alert(self, message, event = None):
         logger.error(message)
 
-    def notify(self, message):
+    def notify(self, message, event = None):
         logger.info(message)
 
-    def whisper(self, message):
+    def whisper(self, message, event = None):
         logger.debug(message)
