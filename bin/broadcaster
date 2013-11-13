@@ -32,8 +32,7 @@ The <value> is mandatory argument, one of three options: 'alert', 'notify', 'whi
 -h, --help
 Prints the synopsis and a list of the most commonly used commands.
 -l, --licence
-Prints broadcaster licence
-'''
+Prints broadcaster licence'''
 
 def licence():
 	print'''
@@ -64,8 +63,7 @@ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-'''
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.'''
 
 def main(argv):
     try:
@@ -103,7 +101,7 @@ def main(argv):
     b = broadcaster.get_client(type_, application='broadcaster')
     if prio == 'alert':
         b.alert(desc, event)
-    if prio == 'notice':
+    if prio == 'notify':
         b.notify(desc, event)
     if prio == 'whisper':
         b.whisper(desc, event)
