@@ -4,6 +4,7 @@
 
 import RPi.GPIO as GPIO
 import time
+import picamera
 
 class Sensor():
 
@@ -42,6 +43,11 @@ class Sensor():
     def sense(self):
         print "Initiating PIR module"
         counter = 0
+        camera = picamera.PiCamera()
+        camera.vflip = True
+        camera.hflip = False
+        camera.brightness = 60
+
         try:
 
             # Loop until users quits with CTRL-C
@@ -49,6 +55,12 @@ class Sensor():
 
                 # Read PIR state
                 self.current_motion = GPIO.input(self.GPIO_PIR)
+
+                if self.current_motion==1:
+                    # TAKE A PHOTO
+                    camera.start_preview()
+                    camera.capture('image'+ str(counter) +'.jpg', format='jpeg')
+                    camera.stop_preview()
 
                 if self.current_motion==1 and self.previous_motion==0:
                     # PIR is triggered
