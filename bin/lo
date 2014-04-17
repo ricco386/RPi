@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+
+# This will work when installed in site-packages on a 
+# target system where the runner script is in /usr/bin
+#
+# So, you don't need anything special - no fancy path tricks.
+
+import sys
+import getopt
+# import lookOver
+from lookOver import pir
+
+def usage():
+    print '''NAME
+lookOver - Raspberry Pi script to record pictures when PIR module motion is detected
+
+SYNOPSIS
+lo [-h|--help]
+
+DESCRIPTION
+Library to easily use multiple types notifications
+
+OPTIONS
+-h, --help
+'''
+
+def licence():
+	print'''
+		LICENCE
+		'''
+
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv, "p:l:h", ["pin=", "led=", "licence", "help"])
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+
+    pir_ = None
+    led_ = None
+
+    for opt, arg in opts: # Loop throught parameters and set variables
+        if opt in ("-p", "--pin"):
+            pir_ = arg
+        if opt in ("--led"):
+            led_ = arg
+        if opt in ("-l", "--licence"):
+            licence()
+            sys.exit()
+        if opt in ("-h", "--help"):
+            usage()
+            sys.exit()
+
+    lo = pir.Sensor(pir_, led_)
+    lo.sense()
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
