@@ -58,8 +58,11 @@ class Sensor():
 
                 if self.current_motion==1:
                     # TAKE A PHOTO
+                    storage_path = '/home/pi/Movement'
+                    timestr = time.strftime("%Y%m%d-%H%M%S-%f")
+
                     camera.start_preview()
-                    camera.capture('image'+ str(counter) +'.jpg', format='jpeg')
+                    camera.capture(storage_path +'/'+ timestr +'.jpg', format='jpeg')
                     camera.stop_preview()
 
                 if self.current_motion==1 and self.previous_motion==0:
