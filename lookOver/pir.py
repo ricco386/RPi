@@ -33,26 +33,27 @@ class Sensor():
 
         try:
 
-        # Loop until users quits with CTRL-C
-        while True :
+            # Loop until users quits with CTRL-C
+            while True:
 
-            # Read PIR state
-            self.current_motion = GPIO.input(GPIO_PIR)
+                # Read PIR state
+                self.current_motion = GPIO.input(GPIO_PIR)
 
-            if self.current_motion==1 and self.previous_motion==0:
-                # PIR is triggered
-                print "  Motion detected!"
-                # Record previous state
-                self.previous_motion=1
-            elif self.current_motion==0 and self.previous_motion==1:
-            # PIR has returned to ready state
-            print "  Waiting for Motion"
-            self.previous_motion=0
+                if self.current_motion==1 and self.previous_motion==0:
+                    # PIR is triggered
+                    print "  Motion detected!"
+                    # Record previous state
+                    self.previous_motion=1
+                elif self.current_motion==0 and self.previous_motion==1:
+                    # PIR has returned to ready state
+                    print "  Waiting for Motion"
+                    self.previous_motion=0
 
-            # Wait for 10 milliseconds
-            time.sleep(0.01)
+                # Wait for 10 milliseconds
+                time.sleep(0.01)
 
         except KeyboardInterrupt:
-        print "Quit"
-        # Reset GPIO settings
+            print "Quit"
+            # Reset GPIO settings
+
         GPIO.cleanup()
