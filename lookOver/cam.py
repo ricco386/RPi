@@ -9,7 +9,7 @@ import picamera
 import datetime
 import os
 import subprocess
-from logging import WARNING, INFO
+from logging import WARNING, INFO, DEBUG
 from lookOver.out import Output
 
 
@@ -23,13 +23,18 @@ class Camera():
     def __init__(self, args):
         self.out = Output(args)
         self.args = args
-        self.camera = picamera.PiCamera()
-        self.today = str(datetime.datetime.now().strftime("%Y-%m-%d"))
 
-        if self.args.hflip:
-            self.camera.hflip = True
-        if self.args.vflip:
-            self.camera.vflip = True
+        print self.args.nopicture
+        print self.args.novideo
+
+        if not self.args.nopicture or not self.args.novideo:
+            self.camera = picamera.PiCamera()
+            self.today = str(datetime.datetime.now().strftime("%Y-%m-%d"))
+
+            if self.args.hflip:
+                self.camera.hflip = True
+            if self.args.vflip:
+                self.camera.vflip = True
 
     def getDir(self, date):
         if self.path is None:
@@ -38,7 +43,7 @@ class Camera():
                 self.out.msg('%s is not mounted, try to mount' % hddcko_path, WARNING)
                 subprocess.call(["mount", hddcko_path])
                 if not os.path.ismount(hddcko_path):
-                    self.out.msg('Couldnt mount %s' % hddcko_path, WARNING)
+                    self.out.msg('Couldnt mount %s (%s)' % hddcko_path, WARNING)
                     hddcko_path = '/home/pi'
                 else:
                     self.out.msg('Yey %s has been mounted' % hddcko_path, INFO)
@@ -56,24 +61,22 @@ class Camera():
         return directory + time + extension
 
     def start_recording(self):
-        self.out.msg('Start recording')
-        if self.args.test:
-            return
-
-        fileName = self.getFileName(extension='.jpg')
-        self.camera.start_preview()
-        self.camera.capture(fileName)
-
-        # Start recording
-        t = time.time()
-        fileName = self.getFileName()
-        self.camera.start_preview()
-        self.camera.start_recording(fileName)
+        self.out.msg('Initiating recording', DEBUG)
+        if not self.args.nopicture:
+            fileName = self.getFileName(extension='.jpg')
+            self.out.msg('Picture preview: %s' % fileName, DEBUG)
+            self.camera.start_preview()
+            self.camera.capture(fileName)
+            self.out.msg('Picture crated', INFO)
+        if not self.args.novideo:
+            fileName = self.getFileName()
+            self.out.msg('Video preview: %s' % fileName, DEBUG)
+            self.camera.start_preview()
+            self.camera.start_recording(fileName)
 
     def stop_recording(self):
-        self.out.msg('Stopped recording')
-        if self.args.test:
-            return
-
-        self.camera.stop_preview()
-        self.camera.stop_recording()
+        if not self.args.novideo:
+            self.camera.stop_preview()
+            self.camera.stop_recording()
+            self.out.msg('Video created', INFO)
+        self.out.msg('Finished recording', DEBUG)

@@ -19,47 +19,39 @@ class Output():
         #logging.basicConfig(format='%(asctime)s :%(levelname)s: %(message)s',filename=today+'.log',level=logging.INFO)
 
         self.logger = logging.getLogger(__name__)
-        if args.loglevel:
-            self.logger.setLevel(args.loglevel)
-            self.default_lvl = args.loglevel
+        print args.verbosity
+        if args.verbosity:
+            self.logger.setLevel(args.verbosity)
+            self.default_lvl = args.verbosity
         else:
-            self.logger.setLevel(logging.DEBUG)
-            self.default_lvl = logging.DEBUG
+            self.logger.setLevel(logging.INFO)
+            self.default_lvl = logging.INFO
+        print self.default_lvl
 
     def log(self, msg, level):
         self.logger.log(level, msg)
 
-    def prnt(self, msg, color=None, back=None, stl=None):
-        clr = ''
+    def prnt(self, msg, level):
         if stdout.isatty():
             # We are printing on screen with some color
-            if color:
-                clr += getattr(Fore, color)
-            if back:
-                clr += getattr(Back, back)
-            if stl:
-                clr += getattr(Style, stl)
-        print clr + msg
-        if stdout.isatty() and (color or back or stl):
+            if level == logging.CRITICAL:
+                msg = Fore.RED + Style.BRIGHT + msg
+            elif level == logging.ERROR:
+                msg = Fore.RED + msg
+            elif level == logging.WARNING:
+                msg = Fore.YELLOW + msg
+            elif level == logging.INFO:
+                msg = Fore.GREEN + Style.BRIGHT + msg
+            elif level == logging.DEBUG:
+                msg = Fore.MAGENTA + msg
+            print msg + Fore.RESET + Back.RESET + Style.RESET_ALL
+        else:
             # Recet colors on terminal to default state
-            print Fore.RESET + Back.RESET + Style.RESET_ALL
+            print msg
 
-    def msg(self, msg, level=None, color=None, back=None, stl=None):
+    def msg(self, msg, level=None):
         if level is None:
             level = self.default_lvl
+        if level >= self.default_lvl:
+            self.prnt(msg, level)
         self.log(msg, level)
-
-        if color is None:
-            if level == logging.CRITICAL:
-                color = 'RED'
-                stl = 'BRIGHT'
-            if level == logging.ERROR:
-                color = 'RED'
-            if level == logging.WARNING:
-                color = 'YELLOW'
-            if level == logging.INFO:
-                color = 'GREEN'
-                stl = 'BRIGHT'
-            else:
-                stl = 'DIM'
-        self.prnt(msg, color=color, back=back, stl=stl)
