@@ -1,7 +1,5 @@
 #!/usr/bin/python
-import time
 import datetime
-import os
 import logging
 from sys import stdout
 from colorama import Fore, Back, Style

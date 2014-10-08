@@ -1,14 +1,10 @@
 #!/usr/bin/python
 import RPi.GPIO as GPIO
 import time
-import picamera
-import datetime
-import logging
-import os
-import logging
-import subprocess
-from argparse import ArgumentParser
+from logging import DEBUG
 from lookOver.cam import Camera
+from lookOver.out import Output
+
 
 class Sensor():
     args = None
@@ -18,6 +14,7 @@ class Sensor():
     GPIO_LED = None
 
     def __init__(self, args):
+        self.out = Output(args)
         self.args = args
         self.GPIO_PIR = 7
         if self.args.pir is not None:
@@ -30,10 +27,10 @@ class Sensor():
         GPIO.setmode(GPIO.BOARD)
         # Set pin as input
         GPIO.setup(self.GPIO_PIR, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        #logging.info('Setting pin for PIR sensor %s' % self.GPIO_PIR)
+        self.out.msg('Setting pin for PIR sensor %s' % self.GPIO_PIR, DEBUG)
         # Set up pin for LED
         # GPIO.setup(self.GPIO_LED, GPIO.OUT)
-        # logging.info('Setting pin for LED diode %s' % self.GPIO_LED)
+        # self.out.msg('Setting pin for LED diode %s' % self.GPIO_LED, DEBUG)
 
     def sense(self):
         cam = Camera(self.args)
@@ -45,7 +42,7 @@ class Sensor():
 
             if self.currState != self.prevState:
                 newState = "HIGH" if self.currState else "LOW"
-                #logging.debug("GPIO pin %s is %s" % (self.GPIO_PIR, newState))
+                self.out.msg("GPIO pin %s is %s" % (self.GPIO_PIR, newState), DEBUG)
 
                 if self.currState:
                     cam.start_recording()
