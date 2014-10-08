@@ -7,7 +7,7 @@
 
 from argparse import ArgumentParser
 
-from lookOver import __version__
+from lookOver import __version__ as VERSION
 from lookOver import pir
 
 def main():
@@ -18,7 +18,7 @@ def main():
     ap.add_argument('-p', '--pin', help='Set pin number on which is PIR sensor connected', nargs='?')
     ap.add_argument('-l', '--led', help='Set pin number on which LED will be enabled when motion sensed', nargs='?')
     ap.add_argument('--verbose', '-v', action='count')
-    ap.add_argument('--version', action='version', version=('%(prog)s '+  __version__))
+    ap.add_argument('--version', action='version', version=('%(prog)s '+  VERSION))
     args = ap.parse_args()
 
     lo = pir.Sensor(args.pin, args.led)
