@@ -1,13 +1,10 @@
 #!/usr/bin/python
-import RPi.GPIO as GPIO
 import time
 import picamera
 import datetime
-from logging import WARNING, INFO
 import os
-import logging
 import subprocess
-from argparse import ArgumentParser
+from logging import WARNING, INFO
 from lookOver.out import Output
 
 
@@ -55,12 +52,13 @@ class Camera():
 
     def start_recording(self):
         self.out.msg('Start recording')
-        #if self.test:
-        #    return
-        # Take photo
+        if self.args.test:
+            return
+
         fileName = self.getFileName(extension='.jpg')
         self.camera.start_preview()
         self.camera.capture(fileName)
+
         # Start recording
         t = time.time()
         fileName = self.getFileName()
@@ -69,7 +67,8 @@ class Camera():
 
     def stop_recording(self):
         self.out.msg('Stopped recording')
-        #if self.test:
-        #    return
+        if self.args.test:
+            return
+
         self.camera.stop_preview()
         self.camera.stop_recording()

@@ -15,10 +15,14 @@ def main():
             description='%(prog)s - Raspberry Pi script to record pictures when PIR module motion is detected',
             epilog="And that's how you'd foo a bar"
             )
+    # Sensors
     ap.add_argument('-p', '--pir', help='Set pin number on which is PIR sensor connected', nargs='?')
     ap.add_argument('-l', '--led', help='Set pin number on which LED will be enabled when motion sensed', nargs='?')
+    # Camera
     ap.add_argument('--hflip', help='Set camera hflip', nargs='?', default=False)
     ap.add_argument('--vflip', help='Set camera vflip', nargs='?', default=False)
+    ap.add_argument('--resolution', '-r', help='Set camera resolution', nargs='?', default=False)
+    # App
     ap.add_argument('--log', help='Set log level', nargs='?')
     ap.add_argument('--test', help='Execute test function', nargs='?', default=False)
     ap.add_argument('--loglevel', help='Log Level', nargs='?')
