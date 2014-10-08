@@ -1,95 +1,53 @@
 #!/usr/bin/python
-#
-# Detect movement using a PIR module
-
 import RPi.GPIO as GPIO
 import time
 import picamera
+import datetime
+import logging
+import os
+import logging
+import subprocess
+from argparse import ArgumentParser
+from lookOver.cam import Camera
 
 class Sensor():
-
-    current_motion = 0
-    previous_motion = 0
+    args = None
+    prevState = False
+    currState = False
     GPIO_PIR = None
     GPIO_LED = None
 
-    def __init__(self, pir_, led_):
-        # Use BCM GPIO references
-        # instead of physical pin numbers
-        GPIO.setmode(GPIO.BCM)
+    def __init__(self, args):
+        self.args = args
+        self.GPIO_PIR = 7
+        if self.args.pir is not None:
+            self.GPIO_PIR = self.args.pir
 
-        print pir_
-        if pir_ is None:
-            self.GPIO_PIR = pir_
-        else:
-            self.GPIO_PIR = 17
+        self.GPIO_LED = 17
+        if self.args.led is not None:
+            self.GPIO_LED = self.args.led
 
-        print led_
-        if led_ is None:
-            self.GPIO_LED = led_
-        else:
-            self.GPIO_LED = 7
-
-        print "PIR Module Test (CTRL-C to exit)"
-
+        GPIO.setmode(GPIO.BOARD)
         # Set pin as input
-        GPIO.setup(self.GPIO_PIR, GPIO.IN)
+        GPIO.setup(self.GPIO_PIR, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        #logging.info('Setting pin for PIR sensor %s' % self.GPIO_PIR)
         # Set up pin for LED
-        GPIO.setup(self.GPIO_LED, GPIO.OUT)
-
-        while GPIO.input(self.GPIO_PIR)==1:
-            self.current_motion = 0
+        # GPIO.setup(self.GPIO_LED, GPIO.OUT)
+        # logging.info('Setting pin for LED diode %s' % self.GPIO_LED)
 
     def sense(self):
-        print "Initiating PIR module"
-        counter = 0
-        camera = picamera.PiCamera()
-        camera.vflip = True
-        camera.hflip = False
-        camera.brightness = 60
+        cam = Camera(self.args)
 
-        try:
+        while True:
+            time.sleep(0.1)
+            self.prevState = self.currState
+            self.currState = GPIO.input(self.GPIO_PIR)
 
-            # Loop until users quits with CTRL-C
-            while True:
+            if self.currState != self.prevState:
+                newState = "HIGH" if self.currState else "LOW"
+                #logging.debug("GPIO pin %s is %s" % (self.GPIO_PIR, newState))
 
-                # Read PIR state
-                self.current_motion = GPIO.input(self.GPIO_PIR)
-
-                if self.current_motion==1:
-                    # TAKE A PHOTO
-                    storage_path = '/home/pi/Movement'
-                    timestr = time.strftime("%Y%m%d-%H%M%S-%f")
-
-                    camera.start_preview()
-                    camera.capture(storage_path +'/'+ timestr +'.jpg', format='jpeg')
-                    camera.stop_preview()
-
-                if self.current_motion==1 and self.previous_motion==0:
-                    # PIR is triggered
-                    print "  Motion detected! ("+ str(counter/100) +"s)"
-                    counter = 0
-
-                    # Turn on the LED
-                    GPIO.output(self.GPIO_LED, True)
-                    # Record previous state
-                    self.previous_motion=1
-                elif self.current_motion==0 and self.previous_motion==1:
-                    # PIR has returned to ready state
-                    print "  Waiting for Motion ("+ str(counter/100) +"s)"
-                    counter = 0
-
-                    # Turn off the LED
-                    GPIO.output(self.GPIO_LED, False)
-                    # Record previous state
-                    self.previous_motion=0
-
-                # Wait for 10 milliseconds
-                time.sleep(0.01)
-                counter += 1
-
-        except KeyboardInterrupt:
-            print "Quit"
-            # Reset GPIO settings
-
-        GPIO.cleanup()
+                if self.currState:
+                    cam.start_recording()
+                else:
+                    cam.stop_recording()
