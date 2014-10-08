@@ -42,7 +42,7 @@ setup(
     license = '',
     packages = packages,
     scripts = ['bin/lo'],
-    install_requires = ['RPi.GPIO', 'picamera'],
+    install_requires = ['RPi.GPIO', 'picamera', 'colorama'],
     platforms = 'Linux',
     classifiers = CLASSIFIERS,
     include_package_data = True
