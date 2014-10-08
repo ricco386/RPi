@@ -1,8 +1,14 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# This software is licensed as described in the README.rst and LICENSE files, which you should have received as
+# part of this distribution.
+
 import datetime
 import logging
 from sys import stdout
 from colorama import Fore, Back, Style
+
 
 class Output():
     default_lvl = None
