@@ -4,12 +4,9 @@
 # This software is licensed as described in the README.rst and LICENSE files, which you should have received as
 # part of this distribution.
 
-import time
 import picamera
 import datetime
-import os
-import subprocess
-from logging import WARNING, INFO, DEBUG
+from logging import INFO, DEBUG
 from lookOver.out import Output
 
 
@@ -18,14 +15,10 @@ class Camera():
     camera = None
     out = None
     today = None
-    path = None
 
     def __init__(self, args):
         self.out = Output(args)
         self.args = args
-
-        print self.args.nopicture
-        print self.args.novideo
 
         if not self.args.nopicture or not self.args.novideo:
             self.camera = picamera.PiCamera()
@@ -36,28 +29,9 @@ class Camera():
             if self.args.vflip:
                 self.camera.vflip = True
 
-    def getDir(self, date):
-        if self.path is None:
-            hddcko_path = '/mnt/hddcko/pictures'
-            if not os.path.ismount(hddcko_path):
-                self.out.msg('%s is not mounted, try to mount' % hddcko_path, WARNING)
-                subprocess.call(["mount", hddcko_path])
-                if not os.path.ismount(hddcko_path):
-                    self.out.msg('Couldnt mount %s' % hddcko_path, WARNING)
-                    hddcko_path = '/home/pi'
-                else:
-                    self.out.msg('Yey %s has been mounted' % hddcko_path, INFO)
-
-            self.path = hddcko_path + '/lookOver/' + date +'/'
-            if not os.path.exists(self.path):
-                self.out.msg('Creating directory %s' % self.path, INFO)
-                os.mkdir(self.path)
-
-        return self.path
-
     def getFileName(self, extension='.h264'):
-        directory = self.getDir(self.today)
-        time = str(datetime.datetime.now().strftime("%H.%M.%S"))
+        directory = self.out.getDir(self.today)
+        time = str(datetime.datetime.now().strftime("%H_%M_%S"))
         return directory + time + extension
 
     def start_recording(self):
