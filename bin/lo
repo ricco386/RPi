@@ -31,18 +31,20 @@ def main():
                   which you should have received as part of this distribution.
                 '''))
     # Sensors
-    ap.add_argument('-p', '--pir', help='Set pin number on which is PIR sensor connected', type=int)
-    ap.add_argument('-l', '--led', help='Set pin number on which LED will be enabled when motion sensed', type=int)
+    ap.add_argument('-p', '--pir', type=int, help='Set pin number on which is PIR sensor connected')
+    ap.add_argument('-l', '--led', type=int, help='Set pin number on which LED will be enabled when motion sensed')
     # Camera
-    ap.add_argument('--nopicture', help='Disable picture at movement trigger', action="store_true")
-    ap.add_argument('--novideo', help='Disable video recording at movement trigger', action="store_true")
-    ap.add_argument('--hflip', help='Set camera hflip', nargs='?', default=False)
-    ap.add_argument('--vflip', help='Set camera vflip', nargs='?', default=False)
-    ap.add_argument('--resolution', '-r', help='Set camera resolution', nargs='?', default=False)
+    ap.add_argument('--nopicture', action='store_true', help='Disable picture at movement trigger')
+    ap.add_argument('--novideo', action='store_true', help='Disable video recording at movement trigger')
+    ap.add_argument('--hflip', action='store_true',
+                    help='Retrieves of sets whether the renderer\'s output is horizontally flipped')
+    ap.add_argument('--vflip', action='store_true',
+                    help='Retrieves of sets whether the renderer\'s output is vertically flipped')
+    ap.add_argument('--resolution', '-r', help='Set camera resolution...', nargs='?', default=False)
     # App
     ap.add_argument('-v', '--verbosity', type=int, choices=[10, 20, 30, 40, 50],
             help="Set output verbosity (50: CRITICAL, 40: ERROR, 30: WARNING, 20: INFO, 10: DEBUG)")
-    ap.add_argument('--version', action='version', version=('%(prog)s '+  VERSION))
+    ap.add_argument('--version', action='version', version=('%(prog)s '+ VERSION))
     args = ap.parse_args()
 
     lo = pir.Sensor(args)
