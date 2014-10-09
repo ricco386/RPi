@@ -28,6 +28,10 @@ class Camera():
                 self.camera.hflip = True
             if self.args.vflip:
                 self.camera.vflip = True
+            if self.args.width and self.args.height:
+		self.camera.resolution = (self.args.width, self.args.height)
+            if self.args.framerate:
+                self.camera.framerate = self.args.framerate
 
     def getFileName(self, extension='.h264'):
         directory = self.out.getDir(self.today)
