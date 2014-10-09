@@ -43,7 +43,7 @@ class Camera():
                 self.out.msg('%s is not mounted, try to mount' % hddcko_path, WARNING)
                 subprocess.call(["mount", hddcko_path])
                 if not os.path.ismount(hddcko_path):
-                    self.out.msg('Couldnt mount %s (%s)' % hddcko_path, WARNING)
+                    self.out.msg('Couldnt mount %s' % hddcko_path, WARNING)
                     hddcko_path = '/home/pi'
                 else:
                     self.out.msg('Yey %s has been mounted' % hddcko_path, INFO)
