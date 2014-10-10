@@ -32,12 +32,12 @@ class Sensor():
 
         GPIO.setmode(GPIO.BOARD)
         # Set pin as input
-        GPIO.setup(self.GPIO_PIR, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.GPIO_PIR, GPIO.IN)
         self.out.msg('Setting pin %s for PIR sensor' % self.GPIO_PIR, DEBUG)
         # Set up pin for LED
         if self.GPIO_LED:
             GPIO.setup(self.GPIO_LED, GPIO.OUT)
-            self.out.msg('Setting pin for LED diode %s' % self.GPIO_LED, DEBUG)
+            self.out.msg('Setting pin %s for LED diode' % self.GPIO_LED, DEBUG)
 
     def movement(self):
         if self.GPIO_LED:
