@@ -18,6 +18,7 @@ class Sensor():
     currState = False
     GPIO_PIR = None
     GPIO_LED = None
+    start_time = None
 
     def __init__(self, args):
         self.out = Output(args)
@@ -58,6 +59,7 @@ class Sensor():
             time.sleep(0.1)
 
     def movement(self):
+        self.start_time = time.time()
         self.led_enable()
         if self.cam:
             self.cam.start_recording()
@@ -66,6 +68,7 @@ class Sensor():
         if self.cam:
             self.cam.stop_recording()
         self.led_disable()
+        self.out.msg('Detected movement for %s seconds' % (time.time() - self.start_time), DEBUG)
 
     def settledown(self):
         self.out.msg('Waiting for PIR to settle...', DEBUG)
