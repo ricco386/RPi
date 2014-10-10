@@ -6,7 +6,7 @@
 
 import RPi.GPIO as GPIO
 import time
-from logging import DEBUG
+from logging import INFO, DEBUG
 from lookOver.cam import Camera
 from lookOver.out import Output
 
@@ -54,17 +54,22 @@ class Sensor():
             self.out.msg('Disabling LED diode at pin %s' % self.GPIO_LED, DEBUG)
 
     def sense(self):
+        try:
+            while True:
+                time.sleep(0.1)
+                self.prevState = self.currState
+                self.currState = GPIO.input(self.GPIO_PIR)
 
-        while True:
-            time.sleep(0.1)
-            self.prevState = self.currState
-            self.currState = GPIO.input(self.GPIO_PIR)
+                if self.currState != self.prevState:
+                    newState = "HIGH" if self.currState else "LOW"
+                    self.out.msg("GPIO pin %s is %s" % (self.GPIO_PIR, newState), DEBUG)
 
-            if self.currState != self.prevState:
-                newState = "HIGH" if self.currState else "LOW"
-                self.out.msg("GPIO pin %s is %s" % (self.GPIO_PIR, newState), DEBUG)
+                    if self.currState:
+                        self.movement()
+                    else:
+                        self.quiet()
 
-                if self.currState:
-                    self.movement()
-                else:
-                    self.quiet()
+        except KeyboardInterrupt:
+            self.out.msg("Keyboard Interrupted...", INFO)
+            # Reset GPIO settings
+            GPIO.cleanup()
