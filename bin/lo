@@ -32,6 +32,7 @@ def main():
                 '''))
     # Sensors
     ap.add_argument('-p', '--pir', type=int, help='Set pin number on which is PIR sensor connected')
+    ap.add_argument('--settle', action='store_true', help='Wait for PIR sensor to settle, before start')
     ap.add_argument('-l', '--led', type=int, help='Set pin number on which LED will be enabled when motion sensed')
     # Camera
     ap.add_argument('--width', type=int, help='Set camera resolution...')

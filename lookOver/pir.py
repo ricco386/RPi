@@ -38,23 +38,47 @@ class Sensor():
         if self.GPIO_LED:
             GPIO.setup(self.GPIO_LED, GPIO.OUT)
             self.out.msg('Setting pin %s for LED diode' % self.GPIO_LED, DEBUG)
+            self.blink(4)
 
-    def movement(self):
+    def led_enable(self):
         if self.GPIO_LED:
             GPIO.output(self.GPIO_LED, True)
             self.out.msg('Enabling LED diode at pin %s' % self.GPIO_LED, DEBUG)
+
+    def led_disable(self):
+        if self.GPIO_LED:
+            GPIO.output(self.GPIO_LED, False)
+            self.out.msg('Disabling LED diode at pin %s' % self.GPIO_LED, DEBUG)
+
+    def blink(self, number):
+        for i in range(0,number):
+            self.led_enable()
+            time.sleep(0.1)
+            self.led_disable()
+            time.sleep(0.1)
+
+    def movement(self):
+        self.led_enable()
         if self.cam:
             self.cam.start_recording()
 
     def quiet(self):
-         if self.cam:
+        if self.cam:
             self.cam.stop_recording()
-         if self.GPIO_LED:
-            GPIO.output(self.GPIO_LED, False)
-            self.out.msg('Disabling LED diode at pin %s' % self.GPIO_LED, DEBUG)
+        self.led_disable()
+
+    def settledown(self):
+        self.out.msg('Waiting for PIR to settle...', DEBUG)
+        # Loop until PIR output is 0
+        while GPIO.input(self.GPIO_PIR)==1:
+            self.currState = 0
+        self.out.msg('... Ready', DEBUG)
 
     def sense(self):
         try:
+            if self.args.settle:
+                self.settledown()
+
             while True:
                 time.sleep(0.1)
                 self.prevState = self.currState
