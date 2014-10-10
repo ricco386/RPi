@@ -38,7 +38,7 @@ class Output():
                 self.msg('%s is not mounted, try to mount' % hddcko_path, WARNING)
                 subprocess.call(["mount", hddcko_path])
                 if not os.path.ismount(hddcko_path):
-                    self.msg('Couldnt mount %s (%s)' % hddcko_path, WARNING)
+                    self.msg('Couldnt mount %s' % hddcko_path, WARNING)
                     hddcko_path = '/home/pi'
                 else:
                     self.msg('Yey %s has been mounted' % hddcko_path, INFO)
