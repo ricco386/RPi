@@ -14,7 +14,6 @@ class Camera():
     args = None
     camera = None
     out = None
-    today = None
 
     def __init__(self, args):
         self.out = Output(args)
@@ -22,19 +21,18 @@ class Camera():
 
         if not self.args.nopicture or not self.args.novideo:
             self.camera = picamera.PiCamera()
-            self.today = str(datetime.datetime.now().strftime("%Y-%m-%d"))
 
             if self.args.hflip:
                 self.camera.hflip = True
             if self.args.vflip:
                 self.camera.vflip = True
             if self.args.width and self.args.height:
-		self.camera.resolution = (self.args.width, self.args.height)
+                self.camera.resolution = (self.args.width, self.args.height)
             if self.args.framerate:
                 self.camera.framerate = self.args.framerate
 
     def getFileName(self, extension='.h264'):
-        directory = self.out.getDir(self.today)
+        directory = self.out.getDir(str(datetime.datetime.now().strftime("%Y-%m-%d")))
         time = str(datetime.datetime.now().strftime("%H_%M_%S"))
         return directory + time + extension
 
