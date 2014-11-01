@@ -17,6 +17,7 @@ class Output():
     default_lvl = None
     logger = None
     path = None
+    today = None
 
     def __init__(self, args):
         if args.verbosity:
@@ -27,11 +28,16 @@ class Output():
                             filename = 'lookOver.log',
                             level = self.default_lvl)
         self.logger = logging.getLogger(__name__)
+        self.path = self.getDir()
 
+    def checkDate(self):
         today = str(datetime.datetime.now().strftime("%Y-%m-%d"))
-        self.path = self.getDir(today)
+        if self.today != today:
+            self.path = None
+            self.today = today
 
-    def getDir(self, date):
+    def getDir(self):
+        self.checkDate()
         if self.path is None:
             hddcko_path = '/mnt/hddcko/pictures'
             if not os.path.ismount(hddcko_path):
@@ -43,7 +49,7 @@ class Output():
                 else:
                     self.msg('Yey %s has been mounted' % hddcko_path, INFO)
 
-            self.path = hddcko_path + '/lookOver/' + date +'/'
+            self.path = hddcko_path + '/lookOver/' + self.today +'/'
             if not os.path.exists(self.path):
                 self.msg('Creating directory %s' % self.path, INFO)
                 os.mkdir(self.path)

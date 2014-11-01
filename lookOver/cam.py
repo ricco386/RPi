@@ -32,7 +32,7 @@ class Camera():
                 self.camera.framerate = self.args.framerate
 
     def getFileName(self, extension='.h264'):
-        directory = self.out.getDir(str(datetime.datetime.now().strftime("%Y-%m-%d")))
+        directory = self.out.getDir()
         time = str(datetime.datetime.now().strftime("%H_%M_%S"))
         return directory + time + extension
 
