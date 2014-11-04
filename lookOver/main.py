@@ -9,7 +9,7 @@ import textwrap
 from lookOver import __version__ as VERSION, __description__ as DESCRIPTION
 from lookOver import pir
 
-def start():
+def setup_args():
     ap = argparse.ArgumentParser(prog='lookOver',
             description='%(prog)s - ' + DESCRIPTION,
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -44,9 +44,10 @@ def start():
     ap.add_argument('-v', '--verbosity', type=int, choices=[10, 20, 30, 40, 50],
             help="Set output verbosity (50: CRITICAL, 40: ERROR, 30: WARNING, 20: INFO, 10: DEBUG)")
     ap.add_argument('--version', action='version', version=('%(prog)s '+ VERSION))
-    args = ap.parse_args()
+    return ap.parse_args()
 
-    lo = pir.Sensor(args)
+def start():
+    lo = pir.Sensor(setup_args())
     lo.sense()
 
 if __name__ == '__main__':
