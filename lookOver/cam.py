@@ -40,19 +40,21 @@ class Camera():
         self.out.msg('Initiating recording', DEBUG)
         if not self.args.nopicture:
             fileName = self.getFileName(extension='.jpg')
-            self.out.msg('Picture preview: %s' % fileName, DEBUG)
+            self.out.msg('Picture preview', DEBUG)
             self.camera.start_preview()
+            self.out.msg('Picture capture: %s' % fileName, DEBUG)
             self.camera.capture(fileName)
-            self.out.msg('Picture crated', INFO)
+            self.out.msg('Picture captured', INFO)
         if not self.args.novideo:
             fileName = self.getFileName()
-            self.out.msg('Video preview: %s' % fileName, DEBUG)
+            self.out.msg('Video preview', DEBUG)
             self.camera.start_preview()
+            self.out.msg('Video recording: %s' % fileName, DEBUG)
             self.camera.start_recording(fileName)
 
     def stop_recording(self):
         if not self.args.novideo:
             self.camera.stop_preview()
             self.camera.stop_recording()
-            self.out.msg('Video created', INFO)
+            self.out.msg('Video recorded', INFO)
         self.out.msg('Finished recording', DEBUG)
