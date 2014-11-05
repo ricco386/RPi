@@ -14,9 +14,8 @@ pin_pir_settle = true
 pin_led =
 
 # Absolut path to file where program logs will be stored
-# TODO: Implement
 # TODO: Implement - Empty value means logging to stdout
-logfile = /tmp/lookOver.log
+log_file = /tmp/lookOver.log
 # Minimum log level, that will be stored in log (higher values are logged automatically)
 # (50: CRITICAL, 40: ERROR, 30: WARNING, 20: INFO, 10: DEBUG)
 log_level = 10

@@ -7,6 +7,7 @@
 import datetime
 import logging
 import os
+import sys
 import subprocess
 from sys import stdout
 from logging import WARNING, INFO
@@ -22,9 +23,14 @@ class Output():
     def __init__(self, config):
         self.default_lvl = config.get('global', 'log_level')
         logging.basicConfig(format = '%(asctime)s :%(levelname)s: %(message)s',
-                            filename = 'lookOver.log',
+                            filename = config.get('global', 'log_file'),
                             level = self.default_lvl)
         self.logger = logging.getLogger(__name__)
+        # All exceptions will be logged without exit
+        def log_except_hook(*exc_info):
+            self.logger.critical('Unhandled exception!', exc_info=exc_info)
+        sys.excepthook = log_except_hook
+
         self.path = self.getDir()
 
     def checkDate(self):
