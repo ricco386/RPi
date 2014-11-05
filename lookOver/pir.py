@@ -12,7 +12,7 @@ from lookOver.out import Output
 
 
 class Sensor():
-    args = None
+    cfg = None
     cam = None
     prevState = False
     currState = False
@@ -20,17 +20,13 @@ class Sensor():
     GPIO_LED = None
     start_time = None
 
-    def __init__(self, args):
-        self.out = Output(args)
-        self.args = args
-        self.cam = Camera(self.args)
-        self.GPIO_PIR = 7
-        if self.args.pir is not None:
-            self.GPIO_PIR = self.args.pir
+    def __init__(self, config):
+        self.out = Output(config)
+        self.cfg = config
+        self.cam = Camera(config)
 
-        if self.args.led is not None:
-            self.GPIO_LED = self.args.led
-
+        self.GPIO_PIR = None if config.get('global', 'pin_pir') is '' else int(config.get('global', 'pin_pir'))
+        self.GPIO_LED = None if config.get('global', 'pin_led') is '' else int(config.get('global', 'pin_led'))
         GPIO.setmode(GPIO.BOARD)
         # Set pin as input
         GPIO.setup(self.GPIO_PIR, GPIO.IN)
@@ -79,7 +75,7 @@ class Sensor():
 
     def sense(self):
         try:
-            if self.args.settle:
+            if self.cfg.getboolean('global', 'pin_pir_settle'):
                 self.settledown()
 
             while True:

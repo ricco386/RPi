@@ -11,50 +11,59 @@ from lookOver.out import Output
 
 
 class Camera():
-    args = None
+    cfg = None
     camera = None
     out = None
 
-    def __init__(self, args):
-        self.out = Output(args)
-        self.args = args
+    def __init__(self, config):
+        self.out = Output(config)
+        self.cfg = config
 
-        if not self.args.nopicture or not self.args.novideo:
-            self.camera = picamera.PiCamera()
-
-            if self.args.hflip:
-                self.camera.hflip = True
-            if self.args.vflip:
-                self.camera.vflip = True
-            if self.args.width and self.args.height:
-                self.camera.resolution = (self.args.width, self.args.height)
-            if self.args.framerate:
-                self.camera.framerate = self.args.framerate
+        self.camera = picamera.PiCamera()
+        self.camera.hflip = config.get('global', 'hflip')
+        self.camera.vflip = config.get('global', 'vflip')
+        self.camera.resolution = (config.getint('global', 'width'),config.getint('global', 'height'))
 
     def getFileName(self, extension='.h264'):
         directory = self.out.getDir()
         time = str(datetime.datetime.now().strftime("%H_%M_%S"))
         return directory + time + extension
 
+    def capture_image(self):
+        fileName = self.getFileName(extension='.jpg')
+        self.out.msg('Picture preview', DEBUG)
+        self.camera.start_preview()
+        self.out.msg('Picture capture: %s' % fileName, DEBUG)
+        self.camera.capture(fileName)
+        self.out.msg('Picture captured', INFO)
+
+    def capture_sequence(self):
+        fileName = self.getFileName(extension='__{counter:03d}.jpg')
+        self.out.msg('Picture sequence preview', DEBUG)
+        self.camera.start_preview()
+        self.out.msg('Picture sequence recording: %s' % fileName, DEBUG)
+        self.camera.capture_continuous(fileName)
+
+    def capture_video(self):
+        fileName = self.getFileName()
+        self.out.msg('Video preview', DEBUG)
+        self.camera.start_preview()
+        self.out.msg('Video recording: %s' % fileName, DEBUG)
+        self.camera.start_recording(fileName)
+
+
     def start_recording(self):
         self.out.msg('Initiating recording', DEBUG)
-        if not self.args.nopicture:
-            fileName = self.getFileName(extension='.jpg')
-            self.out.msg('Picture preview', DEBUG)
-            self.camera.start_preview()
-            self.out.msg('Picture capture: %s' % fileName, DEBUG)
-            self.camera.capture(fileName)
-            self.out.msg('Picture captured', INFO)
-        if not self.args.novideo:
-            fileName = self.getFileName()
-            self.out.msg('Video preview', DEBUG)
-            self.camera.start_preview()
-            self.out.msg('Video recording: %s' % fileName, DEBUG)
-            self.camera.start_recording(fileName)
+
+        if self.cfg.get('global', 'type') == 'image':
+            self.capture_image()
+        if self.cfg.get('global', 'type') == 'image_sequence':
+            self.capture_squence()
+        if self.cfg.get('global', 'type') == 'video':
+            self.capture_video()
 
     def stop_recording(self):
-        if not self.args.novideo:
+        if self.cfg.get('global', 'type') in ('image_sequence', 'video'):
             self.camera.stop_preview()
             self.camera.stop_recording()
-            self.out.msg('Video recorded', INFO)
-        self.out.msg('Finished recording', DEBUG)
+            self.out.msg('Finished recording', INFO)

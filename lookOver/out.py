@@ -19,11 +19,8 @@ class Output():
     path = None
     today = None
 
-    def __init__(self, args):
-        if args.verbosity:
-            self.default_lvl = args.verbosity
-        else:
-            self.default_lvl = logging.INFO
+    def __init__(self, config):
+        self.default_lvl = config.get('global', 'log_level')
         logging.basicConfig(format = '%(asctime)s :%(levelname)s: %(message)s',
                             filename = 'lookOver.log',
                             level = self.default_lvl)
@@ -62,6 +59,7 @@ class Output():
     def prnt(self, msg, level):
         if stdout.isatty():
             # We are printing on screen with some color
+            # TODO: Update this to work with written type from config
             if level == logging.CRITICAL:
                 msg = Fore.RED + Style.BRIGHT + msg
             elif level == logging.ERROR:
