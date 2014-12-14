@@ -19,11 +19,13 @@ class Output():
     logger = None
     path = None
     today = None
+    cfg = None
 
     def __init__(self, config):
-        self.default_lvl = config.get('global', 'log_level')
+        self.cfg = config
+        self.default_lvl = self.cfg.get('global', 'log_level')
         logging.basicConfig(format = '%(asctime)s :%(levelname)s: %(message)s',
-                            filename = config.get('global', 'log_file'),
+                            filename = self.cfg.get('global', 'log_file'),
                             level = self.default_lvl)
         self.logger = logging.getLogger(__name__)
         # All exceptions will be logged without exit
@@ -42,13 +44,17 @@ class Output():
     def getDir(self):
         self.checkDate()
         if self.path is None:
-            hddcko_path = config.get('global', 'storage_path')
-            if not os.path.ismount(hddcko_path):
+            hddcko_path = self.cfg.get('global', 'storage_path')
+            if self.cfg.get('global', 'mountable_storage') and not os.path.ismount(hddcko_path):
                 self.msg('%s is not mounted, try to mount' % hddcko_path, WARNING)
                 subprocess.call(["mount", hddcko_path])
                 if not os.path.ismount(hddcko_path):
                     self.msg('Couldnt mount %s' % hddcko_path, WARNING)
-                    hddcko_path = '/home/pi'
+                    hddcko_path = '/tmp/lookOver'
+                    if not os.path.exists(hddcko_path):
+                        self.msg('Creating directory %s' % hddcko_path, INFO)
+                        os.mkdir(hddcko_path)
+                    hddcko_path = '/tmp'
                 else:
                     self.msg('Yey %s has been mounted' % hddcko_path, INFO)
 

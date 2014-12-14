@@ -22,6 +22,8 @@ log_level = 10
 
 # Camera recordings Storage path
 storage_path = /tmp
+# Check if lookOver should try to mount storage_path first
+mountable_storage = False
 
 # Recording type
 # One of image, image_sequence, video
