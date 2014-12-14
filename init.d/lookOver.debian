@@ -13,7 +13,7 @@
 
 NAME=lo
 USER=root
-PIDFILE=/var/run/lookOver/$NAME.pid
+PIDFILE=/var/run/$NAME.pid
 DAEMON="/usr/local/bin/$NAME"
 DESC="lookOver - Movement monitoring bot"
 
