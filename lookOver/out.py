@@ -42,7 +42,7 @@ class Output():
     def getDir(self):
         self.checkDate()
         if self.path is None:
-            hddcko_path = '/mnt/hddcko/pictures'
+            hddcko_path = config.get('global', 'storage_path')
             if not os.path.ismount(hddcko_path):
                 self.msg('%s is not mounted, try to mount' % hddcko_path, WARNING)
                 subprocess.call(["mount", hddcko_path])

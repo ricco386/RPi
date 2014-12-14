@@ -21,8 +21,8 @@ log_file = /tmp/lookOver.log
 log_level = 10
 
 # Camera recordings Storage path
-# TODO: Implement
-storage = /tmp/
+storage_path = /tmp
+
 # Recording type
 # One of image, image_sequence, video
 type = image
