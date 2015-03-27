@@ -45,7 +45,7 @@ class Output():
         self.checkDate()
         if self.path is None:
             hddcko_path = self.cfg.get('global', 'storage_path')
-            if self.cfg.get('global', 'mountable_storage') and not os.path.ismount(hddcko_path):
+            if self.cfg.getboolean('global', 'mountable_storage') and not os.path.ismount(hddcko_path):
                 self.msg('%s is not mounted, try to mount' % hddcko_path, WARNING)
                 subprocess.call(["mount", hddcko_path])
                 if not os.path.ismount(hddcko_path):
