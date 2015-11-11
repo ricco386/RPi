@@ -10,6 +10,7 @@ def setup_args():
     ap = argparse.ArgumentParser(prog='DHTtemp')
     ap.add_argument('-t', action='store_true', help='show temperature')
     ap.add_argument('-hu', action='store_true', help='show humidity')
+    ap.add_argument('-p', action='store_true', help='set DHT sensor pin')
     return ap.parse_args()
 
 def sense():
@@ -20,6 +21,8 @@ def start():
 
     # Try to grab a sensor reading.  Use the read_retry method which will retry up
     # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
+    if args.p:
+        pin = args.p
     humidity, temperature = sense()
 
     # Note that sometimes you won't get a reading and
