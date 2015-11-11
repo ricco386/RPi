@@ -3,27 +3,25 @@
 import Adafruit_DHT
 import argparse
 
-sensor = Adafruit_DHT.DHT22
-pin = 27
+SENSOR = Adafruit_DHT.DHT22
+DEFAULT_PIN = 27
 
 def setup_args():
     ap = argparse.ArgumentParser(prog='DHTtemp')
     ap.add_argument('-t', action='store_true', help='show temperature')
     ap.add_argument('-hu', action='store_true', help='show humidity')
-    ap.add_argument('-p', action='store_true', help='set DHT sensor pin')
+    ap.add_argument('-p', type=int, help='set DHT sensor pin')
     return ap.parse_args()
-
-def sense():
-    return Adafruit_DHT.read_retry(sensor, pin)
 
 def start():
     args = setup_args()
 
     # Try to grab a sensor reading.  Use the read_retry method which will retry up
     # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
+    pin = DEFAULT_PIN
     if args.p:
         pin = args.p
-    humidity, temperature = sense()
+    humidity, temperature = Adafruit_DHT.read_retry(SENSOR, pin)
 
     # Note that sometimes you won't get a reading and
     # the results will be null (because Linux can't
