@@ -54,8 +54,8 @@ class DhtDaemon(Daemon):
     def __init__(self, pidfile, args=None):
         self.args = args
 
-        if args.pa:
-            self.LOG_PATH = args.pa
+        if args.l:
+            self.LOG_PATH = args.l
 
         logging.basicConfig(filename=self.LOG_PATH, level=logging.INFO)
         super(DhtDaemon, self).__init__(pidfile)
@@ -69,12 +69,11 @@ class DhtDaemon(Daemon):
 
 def setup_args():
     ap = argparse.ArgumentParser(prog='DHTtemp')
-    ap.add_argument('-t', action='store_true', help='show temperature')
-    ap.add_argument('-hu', action='store_true', help='show humidity')
-    ap.add_argument('-p', type=int, help='set DHT sensor pin')
-    ap.add_argument('-pa', type=str, help='set path where log will be stored')
-    ap.add_argument('-d', type=str, help='daemon mode, usage: start|stop|restart')
-
+    ap.add_argument('-t', action='store_true', help='Show temperature.')
+    ap.add_argument('-hu', action='store_true', help='Show humidity.')
+    ap.add_argument('-p', type=int, help='Set DHT sensor pin.')
+    ap.add_argument('-d', type=str, help='Run in daemon mode. Usage: [start|stop|restart]')
+    ap.add_argument('-l', type=str, help='Path where log will be stored. Used only in daemon mode.')
 
     return ap.parse_args()
 
@@ -91,12 +90,9 @@ if __name__ == '__main__':
                 daemon.stop()
             elif 'restart' == args.d:
                 daemon.restart()
-            else:
-                print("Unknown command")
-                sys.exit(2)
             sys.exit(0)
         else:
-            print("usage: %s start|stop|restart" % args.d)
+            print("DHTtemp: error: argument -d: usage [start|stop|restart]")
             sys.exit(2)
     else:
         sensor = Dht(args)
