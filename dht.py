@@ -16,11 +16,11 @@ class Dht(object):
 
     def __init__(self, args=None):
         if args:
-            if args.p:
+            if hasattr(args, 'p') and args.p:
                 self.PIN = args.p
-            if args.t:
+            if hasattr(args, 't') and args.t:
                 self.TEMP = args.t
-            if args.hu:
+            if hasattr(args, 'hu') and args.hu:
                 self.HUM = args.hu
 
     def sense(self):
@@ -54,7 +54,7 @@ class DhtDaemon(Daemon):
     def __init__(self, pidfile, args=None):
         self.args = args
 
-        if args.l:
+        if hasattr(args, 'l') and args.l:
             self.LOG_PATH = args.l
 
         logging.basicConfig(filename=self.LOG_PATH, level=logging.INFO)
@@ -81,7 +81,7 @@ def setup_args():
 if __name__ == '__main__':
     args = setup_args()
 
-    if args.d:
+    if hasattr(args, 'd') and args.d:
         daemon = DhtDaemon('/tmp/dht.pid', args)
         if args.d in ('start', 'stop', 'restart'):
             if 'start' == args.d:
