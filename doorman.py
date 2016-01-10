@@ -7,27 +7,39 @@
 import RPi.GPIO as GPIO
 import time
 
-sensor = 16
-door_closed = 0
-door_open = 1
+class Doorman():
+    sensor_pin = 16
+    sensor_state = 0
+    door_state = 2 # Set unknown value, due to initial reading
+    door_closed = 0
+    door_open = 1
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(sensor, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    def __init__(self):
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        self.sensor_read()
 
-door_status = door_closed
+    def print_door_state(self):
+        if self.door_state == self.door_open:
+            print('Door is open')
+        else:
+            print('Door is closed')
 
-try:
-    while True:
-        sensor_status = GPIO.input(sensor)
-        if sensor_status != door_status:
-            door_status = sensor_status
+    def sensor_read(self):
+        self.sensor_state = GPIO.input(self.sensor_pin)
 
-            if door_status == door_open:
-                print('Door is open')
-            else:
-                print('Door is closed')
+        if self.sensor_state != self.door_state:
+            self.door_state = self.sensor_state
+            self.print_door_state()
 
-        time.sleep(0.1)
+    def sense(self):
+        try:
+            while True:
+                self.sensor_read()
+                time.sleep(0.1)
 
-except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
-    GPIO.cleanup()
+        except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
+            GPIO.cleanup()
+
+d = Doorman()
+d.sense()
