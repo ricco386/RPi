@@ -12,7 +12,7 @@ Installation
 
 - Install the latest released version using pip::
 
-      pip install https://github.com/ricco386/doorman
+      pip install https://github.com/ricco386/doorman/zipball/master
 
 - Make sure all dependencies (listed below) are installed (done automatically when installing via pip)
 - The ``doorman`` command should be installed somewhere in your ``PATH``.
@@ -20,7 +20,7 @@ Installation
 
 **Dependencies:**
 
-- `RPi.GPIO==0.6.1 <https://pypi.python.org/pypi/RPi.GPIO>`_ (0.6.1+)
+- `RPi.GPIO <https://pypi.python.org/pypi/RPi.GPIO>`_ (0.6.1+)
 
 License
 -------
