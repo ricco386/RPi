@@ -6,6 +6,8 @@
 
 import RPi.GPIO as GPIO
 import time
+import logging
+
 
 class Doorman():
     sensor_pin = 16
@@ -15,22 +17,31 @@ class Doorman():
     door_open = 1
 
     def __init__(self):
+        # Prepare logging configuration
+        logconfig = {
+            'filename': '/tmp/doorman.log',
+            'level': logging.INFO,
+            'format': '%(asctime)s %(levelname)-8s %(name)s: %(message)s',
+        }
+        logging.basicConfig(**logconfig)
+        logging.info('Doorman is starting')
+
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         self.sensor_read()
 
-    def print_door_state(self):
+    def log_door_state(self):
         if self.door_state == self.door_open:
-            print('Door is open')
+            logging.info('Door is open')
         else:
-            print('Door is closed')
+            logging.info('Door is closed')
 
     def sensor_read(self):
         self.sensor_state = GPIO.input(self.sensor_pin)
 
         if self.sensor_state != self.door_state:
             self.door_state = self.sensor_state
-            self.print_door_state()
+            self.log_door_state()
 
     def sense(self):
         try:
