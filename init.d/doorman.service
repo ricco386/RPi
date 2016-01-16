@@ -1,4 +1,4 @@
-# Doorman systemd service file
+# RPi.Doorman systemd service file
 #
 # INSTALL:
 #   - copy doorman.conf tmpfiles configuration into /etc/tmpfiles.d/
@@ -7,8 +7,8 @@
 #   - run: systemctl enable doorman.service && systemctl start doorman.service
 
 [Unit]
-Description=Doorman - Door state monitor
-Documentation=https://github.com/ricco386/doorman
+Description=RPi.Doorman - Door state monitor
+Documentation=https://github.com/ricco386/rpi-doorman
 After=network.target
 
 [Service]

@@ -5,6 +5,6 @@
 #
 # So, you don't need anything special - no fancy path tricks.
 
-import doorman.main
+import rpi_doorman.main
 
-doorman.main.start()
+rpi_doorman.main.start()

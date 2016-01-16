@@ -12,7 +12,7 @@ except ImportError:
     from distutils.core import setup
 
 # noinspection PyPep8Naming
-from doorman import __version__ as VERSION
+from rpi_doorman import __version__ as VERSION
 
 read = lambda fname: open(os.path.join(os.path.dirname(__file__), fname)).read()
 
@@ -33,17 +33,17 @@ CLASSIFIERS = [
 ]
 
 packages = [
-    'doorman',
+    'rpi-doorman',
 ]
 
 setup(
-    name='doorman',
+    name='rpi-doorman',
     version=VERSION,
     description='Door state monitor',
     long_description=read('README.rst'),
     author='Richard Kellner',
     author_email='richard.kellner [at] gmail.com',
-    url='https://github.com/ricco386/doorman/',
+    url='https://github.com/ricco386/rpi-doorman/',
     license='MIT',
     packages=packages,
     scripts=['bin/doorman'],

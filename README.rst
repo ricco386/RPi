@@ -1,5 +1,5 @@
-Doorman
-#######
+RPi.Doorman
+###########
 
 Door state monitor, completely written in Python.
 
@@ -13,11 +13,11 @@ Installation
 
 - Install the latest released version using pip::
 
-      pip install https://github.com/ricco386/doorman/zipball/master
+      pip install https://github.com/ricco386/rpi-doorman/zipball/master
 
 - Make sure all dependencies (listed below) are installed (done automatically when installing via pip)
 - The ``doorman`` command should be installed somewhere in your ``PATH``.
-- Systemd scripts are available: https://github.com/ricco386/doorman/tree/master/init.d
+- Systemd scripts are available: https://github.com/ricco386/rpi-doorman/tree/master/init.d
 
 **Dependencies:**
 
@@ -26,4 +26,4 @@ Installation
 License
 -------
 
-For more information see the `LICENSE <https://github.com/ricco386/doorman/blob/master/LICENSE>`_ file.
+For more information see the `LICENSE <https://github.com/ricco386/rpi-doorman/blob/master/LICENSE>`_ file.
