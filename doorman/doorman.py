@@ -30,11 +30,14 @@ class Doorman():
         GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         self.sensor_read()
 
-    def log_door_state(self):
+    def get_door_state(self):
         if self.door_state == self.door_open:
-            logging.info('Door is open')
+            return 'Door is open'
         else:
-            logging.info('Door is closed')
+            return 'Door is closed'
+
+    def log_door_state(self):
+        logging.info(self.get_door_state())
 
     def sensor_read(self):
         self.sensor_state = GPIO.input(self.sensor_pin)

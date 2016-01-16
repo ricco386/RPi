@@ -7,7 +7,7 @@
 import RPi.GPIO as GPIO
 import time
 import logging
-from doorman.doorman import Doorman
+from doorman import Doorman
 
 def start():
     d = Doorman()
