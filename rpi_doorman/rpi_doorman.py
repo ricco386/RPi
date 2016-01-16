@@ -9,7 +9,7 @@ import time
 import logging
 
 
-class Doorman():
+class Doorman(object):
     args = []
     sensor_pin = 16
     sensor_state = 0
