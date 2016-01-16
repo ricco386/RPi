@@ -5,7 +5,7 @@ Door state monitor, completely written in Python.
 
 Doorman is using adafruit magnetic contact switch (door sensor), with Raspberry Pi GPIO. Software might work with other sensors as well but have not been tested.
 
-To connect to Raspberry Pi plug into GPIO PIN 18 and POWER PIN. Install and execute doorman and it should work.
+To connect to Raspberry Pi plug into GPIO PIN 16 and POWER PIN. Install and execute doorman and it should work. Alternatively you can user different PIN and execute doorman with parameter: ``doorman -P pin_number``.
 
 
 Installation
