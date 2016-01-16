@@ -13,7 +13,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=daemon
+User=pi
 PIDFile=/run/doorman/doorman.pid
 ExecStart=/usr/bin/doorman
 Restart=on-failure
