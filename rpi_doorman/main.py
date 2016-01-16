@@ -20,7 +20,7 @@ def setup_args():
     return ap.parse_args()
 
 
-if __name__ == '__main__':
+def main():
     args = setup_args()
     d = Doorman(args)
 
@@ -28,3 +28,8 @@ if __name__ == '__main__':
         print(d.get_door_state())
     else:
         d.sense()
+
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    main()

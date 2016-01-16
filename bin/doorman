@@ -7,4 +7,4 @@
 
 import rpi_doorman.main
 
-rpi_doorman.main.start()
+rpi_doorman.main.main()
