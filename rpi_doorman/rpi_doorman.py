@@ -7,7 +7,6 @@
 import RPi.GPIO as GPIO
 import time
 import logging
-import requests
 
 
 class Doorman():
@@ -54,19 +53,24 @@ class Doorman():
 
     def notify(self):
         if hasattr(self.args, 'notify') and self.args.notify:
-            r = requests.post("http://127.0.0.1:8922/doorman_update",
-                    data = {
-                        "user": self.args.notify,
-                        "msg": self.get_door_state()
-                        }
-                    )
-            log = 'Notification response code: %s (user: %s, msg: %s)' % (r.status_code, self.args.notify,
-                    self.get_door_state())
-
-            if r.status_code != requests.codes.ok:
-                logging.error(log)
+            try:
+                import requests
+            except ImportError:
+                logger.error('Can not import requests library. Make sure it is installed!')
             else:
-                logging.debug(log)
+                r = requests.post("http://127.0.0.1:8922/doorman_update",
+                        data = {
+                            "user": self.args.notify,
+                            "msg": self.get_door_state()
+                            }
+                        )
+                log = 'Notification response code: %s (user: %s, msg: %s)' % (r.status_code, self.args.notify,
+                        self.get_door_state())
+
+                if r.status_code != requests.codes.ok:
+                    logging.error(log)
+                else:
+                    logging.debug(log)
 
     def callback_sensor_read(self):
         logging.info(self.get_door_state())
