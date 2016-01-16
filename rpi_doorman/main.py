@@ -5,7 +5,7 @@
 # which you should have received as part of this distribution.
 
 import argparse
-from doorman import Doorman
+from rpi_doorman import Doorman
 
 
 def setup_args():

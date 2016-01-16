@@ -3,8 +3,8 @@
 # INSTALL:
 #   - copy doorman.conf tmpfiles configuration into /etc/tmpfiles.d/
 #   - copy doorman.service into /etc/systemd/system/
-#   - run: systemd-tmpfiles --create /etc/tmpfiles.d/doorman.conf
-#   - run: systemctl enable doorman.service && systemctl start doorman.service
+#   - run: systemd-tmpfiles --create /etc/tmpfiles.d/rpi-doorman.conf
+#   - run: systemctl enable rpi-doorman.service && systemctl start rpi-doorman.service
 
 [Unit]
 Description=RPi.Doorman - Door state monitor
@@ -14,8 +14,8 @@ After=network.target
 [Service]
 Type=simple
 User=pi
-PIDFile=/run/doorman/doorman.pid
-ExecStart=/usr/bin/doorman
+PIDFile=/run/rpi-doorman/rpi-doorman.pid
+ExecStart=/usr/bin/rpi-doorman
 Restart=on-failure
 RestartPreventExitStatus=2
 RestartSec=30
