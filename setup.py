@@ -33,7 +33,7 @@ CLASSIFIERS = [
 ]
 
 packages = [
-    'rpi-doorman',
+    'rpi_doorman',
 ]
 
 setup(
