@@ -1,8 +1,8 @@
 # RPi.Doorman systemd service file
 #
 # INSTALL:
-#   - copy doorman.conf tmpfiles configuration into /etc/tmpfiles.d/
-#   - copy doorman.service into /etc/systemd/system/
+#   - copy rpi-doorman.conf tmpfiles configuration into /etc/tmpfiles.d/
+#   - copy rpi-doorman.service into /etc/systemd/system/
 #   - run: systemd-tmpfiles --create /etc/tmpfiles.d/rpi-doorman.conf
 #   - run: systemctl enable rpi-doorman.service && systemctl start rpi-doorman.service
 
