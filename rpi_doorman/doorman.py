@@ -7,9 +7,11 @@
 import RPi.GPIO as GPIO
 import time
 import logging
+import requests
 
 
 class Doorman():
+    args = []
     sensor_pin = 16
     sensor_state = 0
     door_state = 2 # Set unknown value, due to initial reading
@@ -17,6 +19,9 @@ class Doorman():
     door_open = 1
 
     def __init__(self, args=[]):
+        if args:
+            self.args = args
+
         # Prepare logging configuration
         logconfig = {
             'filename': '/tmp/doorman.log',
@@ -24,17 +29,17 @@ class Doorman():
             'format': '%(asctime)s %(levelname)-8s %(name)s: %(message)s',
         }
 
-        if hasattr(args, 'l') and args.l:
-            logconfig['filename'] = args.l
+        if hasattr(args, 'log') and args.log:
+            logconfig['filename'] = args.log
 
-        if hasattr(args, 'd') and args.d:
+        if hasattr(args, 'debug') and args.debug:
             logconfig['level'] = logging.DEBUG
 
         logging.basicConfig(**logconfig)
         logging.info('Doorman is at your service')
 
-        if hasattr(args, 'p') and args.p:
-            self.sensor_pin = args.p
+        if hasattr(args, 'pin') and args.pin:
+            self.sensor_pin = args.pin
         logging.debug('Sensor PIN: %s', self.sensor_pin)
 
         GPIO.setmode(GPIO.BOARD)
@@ -47,6 +52,22 @@ class Doorman():
         else:
             return 'Door is closed'
 
+    def notify(self):
+        if hasattr(self.args, 'notify') and self.args.notify:
+            r = requests.post("http://127.0.0.1:8922/doorman_update",
+                    data = {
+                        "user": self.args.notify,
+                        "msg": self.get_door_state()
+                        }
+                    )
+            log = 'Notification response code: %s (user: %s, msg: %s)' % (r.status_code, self.args.notify,
+                    self.get_door_state())
+
+            if r.status_code != requests.codes.ok:
+                logging.error(log)
+            else:
+                logging.debug(log)
+
     def callback_sensor_read(self):
         logging.info(self.get_door_state())
 
@@ -57,6 +78,7 @@ class Doorman():
             logging.debug('Changing sensor state from %s to %s' % (self.door_state, self.sensor_state))
             self.door_state = self.sensor_state
             self.callback_sensor_read()
+            self.notify()
 
     def sense(self):
         try:

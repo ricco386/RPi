@@ -13,9 +13,10 @@ def setup_args():
             description='RPi.Doorman is using adafruit magnetic contact switch (door sensor), will permanently sense for door status and its changes.'
             )
     ap.add_argument('-c', action='store_true', help='Current door status will be shown.')
-    ap.add_argument('-p', type=int, help='Pin number, for GPIO magnetic contact switch (door sensor).')
-    ap.add_argument('-l', type=str, help='Log path, where logs will be stored.')
-    ap.add_argument('-d', action='store_true', help='Debug mode, wheather store debug info in log.')
+    ap.add_argument('--notify', type=str, help='Jabber ID to notify via Ludolph webhook with sensor state change (POST).')
+    ap.add_argument('-p', '--pin', type=int, help='Pin number, for GPIO magnetic contact switch (door sensor).')
+    ap.add_argument('-l', '--log', type=str, help='Log path, where logs will be stored.')
+    ap.add_argument('-d', '--debug', action='store_true', help='Debug mode, wheather store debug info in log.')
 
     return ap.parse_args()
 
