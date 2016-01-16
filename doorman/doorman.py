@@ -24,7 +24,7 @@ class Doorman():
             'format': '%(asctime)s %(levelname)-8s %(name)s: %(message)s',
         }
         logging.basicConfig(**logconfig)
-        logging.info('Doorman is starting')
+        logging.info('Doorman is at your service')
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -36,22 +36,25 @@ class Doorman():
         else:
             return 'Door is closed'
 
-    def log_door_state(self):
+    def callback_sensor_read(self):
         logging.info(self.get_door_state())
 
     def sensor_read(self):
         self.sensor_state = GPIO.input(self.sensor_pin)
 
         if self.sensor_state != self.door_state:
+            logging.debug('Changing sensor state from %s to %s' % (self.door_state, self.sensor_state))
             self.door_state = self.sensor_state
-            self.log_door_state()
+            self.callback_sensor_read()
 
     def sense(self):
         try:
+            logging.debug('Doorman is starting to watch the door status')
             while True:
                 self.sensor_read()
                 time.sleep(0.1)
 
         except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
+            logging.info('Thank you for using my service, your Doorman!')
             GPIO.cleanup()
 
