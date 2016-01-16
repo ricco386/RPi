@@ -46,7 +46,7 @@ setup(
     url='https://github.com/ricco386/rpi-doorman/',
     license='MIT',
     packages=packages,
-    scripts=['bin/doorman'],
+    scripts=['bin/rpi-doorman'],
     install_requires=DEPS,
     platforms='any',
     classifiers=CLASSIFIERS,
