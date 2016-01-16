@@ -52,11 +52,3 @@ class Doorman():
         except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
             GPIO.cleanup()
 
-
-def start():
-    d = Doorman()
-    d.sense()
-
-
-if __name__ == '__main__':
-    start()
