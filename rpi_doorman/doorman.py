@@ -16,15 +16,26 @@ class Doorman():
     door_closed = 0
     door_open = 1
 
-    def __init__(self):
+    def __init__(self, args=[]):
         # Prepare logging configuration
         logconfig = {
             'filename': '/tmp/doorman.log',
             'level': logging.INFO,
             'format': '%(asctime)s %(levelname)-8s %(name)s: %(message)s',
         }
+
+        if hasattr(args, 'l') and args.l:
+            logconfig['filename'] = args.l
+
+        if hasattr(args, 'd') and args.d:
+            logconfig['level'] = logging.DEBUG
+
         logging.basicConfig(**logconfig)
         logging.info('Doorman is at your service')
+
+        if hasattr(args, 'p') and args.p:
+            self.sensor_pin = args.p
+        logging.debug('Sensor PIN: %s', self.sensor_pin)
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
