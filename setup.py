@@ -25,7 +25,7 @@ CLASSIFIERS = [
     'Topic :: Utilities'
 ]
 
-with open("README.md", "r") as fp:
+with open("README.rst", "r") as fp:
     sensor_long_description = fp.read()
 
 setup(

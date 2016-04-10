@@ -3,7 +3,7 @@
 #
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
-
+import argparse
 import RPi.GPIO as GPIO
 import time
 import logging
@@ -72,3 +72,15 @@ class Sensor(object):
         except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
             logging.info('You have interupted %s sensing process...', self.NAME)
             GPIO.cleanup()
+
+
+class Setup(object):
+
+    def args(self, name, desc):
+        ap = argparse.ArgumentParser(prog=name, description=desc)
+        ap.add_argument('-d', action='store_true', help='Display output.')
+        ap.add_argument('-p', type=int, help='Set sensor pin.')
+        ap.add_argument('-l', type=str, help='Path where log will be stored.')
+        ap.add_argument('--debug', action='store_true', help='Store debug logs.')
+
+        return ap
