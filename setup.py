@@ -16,7 +16,7 @@ from rpi_dht import __version__ as VERSION
 
 read = lambda fname: open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-DEPS = ['RPi.Sensor',]
+DEPS = ['Adafruit_Python_DHT', 'RPi.Sensor',]
 
 CLASSIFIERS = [
     'Environment :: Console',
@@ -39,7 +39,7 @@ packages = [
 setup(
     name='RPi.DHT',
     version=VERSION,
-    description='DHT sensor',
+    description='Python implementation for Adafruit_DHT sensor for Raspberry Pi.',
     long_description=read('README.rst'),
     author='Richard Kellner',
     author_email='richard.kellner [at] gmail.com',

@@ -9,7 +9,7 @@ from dht import Dht, DhtSetup
 
 
 def main():
-    args = DhtSetup().args('dht', 'bla').parse_args()
+    args = DhtSetup().args('rpi-dht', 'Python implementation for Adafruit_DHT sensor for Raspberry Pi.').parse_args()
     sensor = Dht(args)
 
     if hasattr(args, 'd') and args.d:
