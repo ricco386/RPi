@@ -1,46 +1,51 @@
 #!/usr/bin/python
 
 import sys
-import time
-import logging
 import Adafruit_DHT
 import argparse
-from daemon3 import Daemon
+from sensor import Sensor
 
 
-class Dht(object):
+class Dht(Sensor):
+
+    NAME = 'DHT'
     SENSOR = Adafruit_DHT.DHT22
-    PIN = 27
-    TEMP = False
-    HUM = False
+    sensor_pin = 21
+    temperature = None
+    humidity = None
+    display_temp = False
+    display_hum = False
 
-    def __init__(self, args=None):
+    def __init__(self, args=[]):
+        super(Dht, self).__init__(args)
+
         if args:
-            if hasattr(args, 'p') and args.p:
-                self.PIN = args.p
             if hasattr(args, 't') and args.t:
-                self.TEMP = args.t
+                self.display_temp = args.t
             if hasattr(args, 'hu') and args.hu:
-                self.HUM = args.hu
+                self.display_hum = args.hu
 
-    def sense(self):
+    def __str__(self):
+        self.output()
+
+    def sensor_read(self):
+        super(Dht, self).sensor_read()
         # Try to grab a sensor reading.  Use the read_retry method which will retry up
         # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
-        return Adafruit_DHT.read_retry(self.SENSOR, self.PIN)
+        self.humidity, self.temperature = Adafruit_DHT.read_retry(self.SENSOR, self.sensor_pin)
 
     def output(self):
-        humidity, temperature = self.sense()
-
         # Note that sometimes you won't get a reading and the results will be null
         # (because Linux can't guarantee the timing of calls to read the sensor).
         # If this happens try again!
-        if humidity is not None and temperature is not None:
-            out = ''
-            if self.TEMP:
-                out += 'Temp={0:0.1f}*C '.format(temperature)
-            if self.HUM:
-                out += 'Humidity={0:0.1f}%'.format(humidity)
-            if not self.TEMP and not self.HUM:
+        out = ''
+
+        if self.humidity is not None and self.temperature is not None:
+            if self.display_temp:
+                out += 'Temp={0:0.1f}*C '.format(self.temperature)
+            if self.display_hum:
+                out += 'Humidity={0:0.1f}%'.format(self.humidity)
+            if not self.display_temp and not self.display_hum:
                 out = 'No value to read defined!'
         else:
             out = 'Failed to get reading. Try again!'
@@ -48,32 +53,13 @@ class Dht(object):
         return out
 
 
-class DhtDaemon(Daemon):
-    LOG_PATH = '/tmp/dht.log'
-
-    def __init__(self, pidfile, args=None):
-        self.args = args
-
-        if hasattr(args, 'l') and args.l:
-            self.LOG_PATH = args.l
-
-        logging.basicConfig(filename=self.LOG_PATH, level=logging.INFO)
-        super(DhtDaemon, self).__init__(pidfile)
-
-    def run(self):
-        sensor = Dht(self.args)
-        while True:
-            logging.info(sensor.output())
-            time.sleep(10)
-
-
 def setup_args():
     ap = argparse.ArgumentParser(prog='DHTtemp')
+    ap.add_argument('-d', action='store_true', help='Display output.')
     ap.add_argument('-t', action='store_true', help='Show temperature.')
     ap.add_argument('-hu', action='store_true', help='Show humidity.')
     ap.add_argument('-p', type=int, help='Set DHT sensor pin.')
-    ap.add_argument('-d', type=str, help='Run in daemon mode. Usage: [start|stop|restart]')
-    ap.add_argument('-l', type=str, help='Path where log will be stored. Used only in daemon mode.')
+    ap.add_argument('-l', type=str, help='Path where log will be stored.')
 
     return ap.parse_args()
 
@@ -81,20 +67,11 @@ def setup_args():
 if __name__ == '__main__':
     args = setup_args()
 
+    sensor = Dht(args)
+
     if hasattr(args, 'd') and args.d:
-        daemon = DhtDaemon('/tmp/dht.pid', args)
-        if args.d in ('start', 'stop', 'restart'):
-            if 'start' == args.d:
-                daemon.start()
-            elif 'stop' == args.d:
-                daemon.stop()
-            elif 'restart' == args.d:
-                daemon.restart()
-            sys.exit(0)
-        else:
-            print("DHTtemp: error: argument -d: usage [start|stop|restart]")
-            sys.exit(2)
-    else:
-        sensor = Dht(args)
         print(sensor.output())
-        sys.exit(0)
+    else:
+        sensor.sense()
+
+    sys.exit(0)
