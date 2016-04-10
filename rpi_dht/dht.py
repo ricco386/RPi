@@ -3,7 +3,7 @@
 import sys
 import Adafruit_DHT
 import argparse
-from sensor import Sensor
+from sensor import Sensor, Setup
 
 
 class Dht(Sensor):
@@ -53,25 +53,11 @@ class Dht(Sensor):
         return out
 
 
-def setup_args():
-    ap = argparse.ArgumentParser(prog='DHTtemp')
-    ap.add_argument('-d', action='store_true', help='Display output.')
-    ap.add_argument('-t', action='store_true', help='Show temperature.')
-    ap.add_argument('-hu', action='store_true', help='Show humidity.')
-    ap.add_argument('-p', type=int, help='Set DHT sensor pin.')
-    ap.add_argument('-l', type=str, help='Path where log will be stored.')
+class DhtSetup(Setup):
 
-    return ap.parse_args()
+    def args(self, name, desc):
+        ap = super(DhtSetup, self).args(name, desc)
+        ap.add_argument('-t', action='store_true', help='Show temperature.')
+        ap.add_argument('-hu', action='store_true', help='Show humidity.')
 
-
-if __name__ == '__main__':
-    args = setup_args()
-
-    sensor = Dht(args)
-
-    if hasattr(args, 'd') and args.d:
-        print(sensor.output())
-    else:
-        sensor.sense()
-
-    sys.exit(0)
+        return ap
