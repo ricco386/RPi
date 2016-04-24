@@ -9,7 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-DEPS = ['RPi.GPIO',]
+DEPS = ['RPi.GPIO', 'requests']
 
 CLASSIFIERS = [
     'Environment :: Console',

@@ -7,6 +7,7 @@ import argparse
 import RPi.GPIO as GPIO
 import time
 import logging
+import requests
 
 
 class Sensor(object):
@@ -16,6 +17,7 @@ class Sensor(object):
     sensor_state = 0
     cycle_sleep = 0.1
     thread_exit = False
+    url = False
 
     def __init__(self, args=[]):
         if args:
@@ -37,11 +39,18 @@ class Sensor(object):
         logging.basicConfig(**logconfig)
         logging.info('%s is at your service' % self.NAME)
 
+        if hasattr(args, 'server') and args.server:
+            self.url = args.server
+            logging.info('%s will notify server: %s' % (self.NAME, self.url))
+
         if hasattr(args, 'pin') and args.pin:
             self.sensor_pin = args.pin
         elif self.sensor_pin < 0 or self.sensor_pin > 40:
             logging.error('PIN have to between 1 and 40')
             raise Exception
+
+        if hasattr(args, 'pin') and args.pin:
+            self.sensor_pin = args.pin
 
         logging.info('%s PIN: %s' % (self.NAME, self.sensor_pin))
         self.set_gpio()
@@ -73,14 +82,28 @@ class Sensor(object):
             logging.info('You have interupted %s sensing process...', self.NAME)
             GPIO.cleanup()
 
+    def post_data(self, postdata):
+        if not self.url:
+            raise ValueError('Server has not been defined!')
+
+        r = requests.post(self.url, postdata)
+
+        if r.status_code == requests.codes.ok:
+            logging.info("HTTP Post to %s was successful", self.url)
+            return True
+        else:
+            logging.error("HTTP Post to %s has failed...", self.url)
+            return False
+
 
 class Setup(object):
 
     def args(self, name, desc):
         ap = argparse.ArgumentParser(prog=name, description=desc)
         ap.add_argument('-d', action='store_true', help='Display output.')
-        ap.add_argument('-p', type=int, help='Set sensor pin.')
-        ap.add_argument('-l', type=str, help='Path where log will be stored.')
+        ap.add_argument('-p', '--pin', type=int, help='Set sensor pin.')
+        ap.add_argument('-l', '--log', type=str, help='Path where log will be stored.')
+        ap.add_argument('-s', '--server', type=str, help='Server where data will be posted.')
         ap.add_argument('--debug', action='store_true', help='Store debug logs.')
 
         return ap
