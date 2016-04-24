@@ -67,15 +67,15 @@ class Sensor(object):
         logging.debug('%s post-read sensor call.', self.NAME)
 
     def sensor_read(self):
+        self.pre_sensor_check()
         logging.debug('%s sensor reading', self.NAME)
+        self.post_sensor_check()
 
     def sense(self):
         try:
             logging.debug('%s sensing is starting to watch the door status', self.NAME)
             while not self.thread_exit:
-                self.pre_sensor_check()
                 self.sensor_read()
-                self.post_sensor_check()
                 time.sleep(self.cycle_sleep)
 
         except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
