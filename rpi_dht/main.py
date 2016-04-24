@@ -5,11 +5,12 @@
 # which you should have received as part of this distribution.
 import sys
 import argparse
-from dht import Dht, DhtSetup
+from dht import Dht
+from sensor import Setup
 
 
 def main():
-    args = DhtSetup().args('rpi-dht', 'Python implementation for Adafruit_DHT sensor for Raspberry Pi.').parse_args()
+    args = Setup().args('rpi-dht', 'Python implementation for Adafruit_DHT sensor for Raspberry Pi.').parse_args()
     sensor = Dht(args)
 
     if hasattr(args, 'd') and args.d:
