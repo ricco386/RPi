@@ -117,7 +117,7 @@ class Sensor(object):
             }
             r = requests.post(self.url, headers=headers, data=postdata)
         elif self.username and self.password:
-            r = requests.post(self.url, auth(self.username, self.password), data=postdata)
+            r = requests.post(self.url, auth=(self.username, self.password), data=postdata)
         else:
             r = requests.post(self.url, data=postdata)
 
