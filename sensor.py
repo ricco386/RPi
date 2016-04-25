@@ -18,6 +18,8 @@ class Sensor(object):
     cycle_sleep = 0.1
     thread_exit = False
 
+    log = None
+
     url = False
     token = False
     username = False
@@ -28,45 +30,46 @@ class Sensor(object):
             self.args = args
 
         # Prepare logging configuration
+        self.set_logging()
+        self.log.info('%s is at your service...' % self.NAME)
+
+        if hasattr(args, 'server') and args.server:
+            self.url = args.server
+            self.log.info('Notify server: %s' % self.url)
+
+        if hasattr(args, 'token') and args.token:
+            self.token = args.token
+            self.log.info('Authenticate on server via token.')
+
+        if hasattr(args, 'username') and args.username and hasattr(args, 'password') and args.password:
+            self.username = args.username
+            self.password = args.password
+            self.log.info('Authenticate on server via username and password.')
+
+        if hasattr(args, 'pin') and args.pin:
+            self.sensor_pin = args.pin
+        elif self.sensor_pin < 0 or self.sensor_pin > 40:
+            self.log.error('PIN have to between 1 and 40')
+            raise Exception
+
+        self.log.info('Sensor at PIN: %s' % self.sensor_pin)
+        self.set_gpio()
+
+    def set_logging(self):
         logconfig = {
             'filename': '/tmp/%s.log' % self.NAME,
             'level': logging.INFO,
             'format': '%(asctime)s %(levelname)-8s %(name)s: %(message)s',
         }
 
-        if hasattr(args, 'log') and args.log:
-            logconfig['filename'] = args.log
+        if hasattr(self.args, 'log') and self.args.log:
+            logconfig['filename'] = self.args.log
 
-        if hasattr(args, 'debug') and args.debug:
+        if hasattr(self.args, 'debug') and self.args.debug:
             logconfig['level'] = logging.DEBUG
 
         logging.basicConfig(**logconfig)
-        logging.info('%s is at your service' % self.NAME)
-
-        if hasattr(args, 'server') and args.server:
-            self.url = args.server
-            logging.info('%s will notify server: %s' % (self.NAME, self.url))
-
-        if hasattr(args, 'token') and args.token:
-            self.token = args.token
-            logging.debug('%s will authenticate on server via token.' % self.NAME)
-
-        if hasattr(args, 'username') and args.username and hasattr(args, 'password') and args.password:
-            self.username = args.username
-            self.password = args.password
-            logging.debug('%s will authenticate on server via username and password.' % self.NAME)
-
-        if hasattr(args, 'pin') and args.pin:
-            self.sensor_pin = args.pin
-        elif self.sensor_pin < 0 or self.sensor_pin > 40:
-            logging.error('PIN have to between 1 and 40')
-            raise Exception
-
-        if hasattr(args, 'pin') and args.pin:
-            self.sensor_pin = args.pin
-
-        logging.info('%s PIN: %s' % (self.NAME, self.sensor_pin))
-        self.set_gpio()
+        self.log = logging.getLogger(self.NAME)
 
     def set_gpio(self):
         GPIO.setmode(GPIO.BOARD)
@@ -74,13 +77,13 @@ class Sensor(object):
         self.sensor_read()
 
     def pre_sensor_read_callback(self):
-        logging.debug('%s pre-read sensor call.', self.NAME)
+        self.log.debug('Pre-read sensor callback.')
 
     def post_sensor_read_callback(self):
-        logging.debug('%s post-read sensor call.', self.NAME)
+        self.log.debug('Post-read sensor callback.')
 
     def sensor_read_callback(self):
-        logging.debug('%s sensor reading', self.NAME)
+        self.log.debug('Sensor read callback')
 
     def sensor_read(self):
         self.pre_sensor_read_callback()
@@ -89,18 +92,23 @@ class Sensor(object):
 
     def sense(self):
         try:
-            logging.debug('%s sensing is starting to watch the door status', self.NAME)
+            self.log.debug('Starting permanent sensing process...')
 
             while not self.thread_exit:
                 self.sensor_read()
                 time.sleep(self.cycle_sleep)
 
+                if self.thread_exit:
+                    self.log.info('Signal send to interupted sensing process...')
+
         except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
-            logging.info('You have interupted %s sensing process...', self.NAME)
-            GPIO.cleanup()
+            self.log.info('You have interupted sensing process...')
+
+        GPIO.cleanup()
 
     def post_data(self, postdata):
         if not self.url:
+            self.log.error('Trying to post data, but no server bas been defined!')
             raise ValueError('Server has not been defined!')
 
         if self.token:
@@ -114,10 +122,10 @@ class Sensor(object):
             r = requests.post(self.url, data=postdata)
 
         if r.status_code == requests.codes.ok:
-            logging.info("HTTP Post to %s was successful", self.url)
+            self.log.info("HTTP Post to %s was successful", self.url)
             return True
         else:
-            logging.error("HTTP Post to %s has failed...", self.url)
+            self.log.error("HTTP Post to %s has failed...", self.url)
             return False
 
 
