@@ -84,6 +84,7 @@ class Sensor(object):
 
     def post_sensor_read_callback(self):
         self.log.debug('Post-read sensor callback.')
+        self.failed_notification()
 
     def sensor_read_callback(self):
         self.log.debug('Sensor read callback')
