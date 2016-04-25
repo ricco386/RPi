@@ -73,20 +73,24 @@ class Sensor(object):
         GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         self.sensor_read()
 
-    def pre_sensor_check(self):
+    def pre_sensor_read_callback(self):
         logging.debug('%s pre-read sensor call.', self.NAME)
 
-    def post_sensor_check(self):
+    def post_sensor_read_callback(self):
         logging.debug('%s post-read sensor call.', self.NAME)
 
-    def sensor_read(self):
-        self.pre_sensor_check()
+    def sensor_read_callback(self):
         logging.debug('%s sensor reading', self.NAME)
-        self.post_sensor_check()
+
+    def sensor_read(self):
+        self.pre_sensor_read_callback()
+        self.sensor_read_callback()
+        self.post_sensor_read_callback()
 
     def sense(self):
         try:
             logging.debug('%s sensing is starting to watch the door status', self.NAME)
+
             while not self.thread_exit:
                 self.sensor_read()
                 time.sleep(self.cycle_sleep)
