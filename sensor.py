@@ -18,6 +18,9 @@ class Sensor(object):
     cycle_sleep = 0.1
     thread_exit = False
 
+    failed = 0
+    failed_notify = 5
+
     log = None
 
     url = False
@@ -89,6 +92,10 @@ class Sensor(object):
         self.pre_sensor_read_callback()
         self.sensor_read_callback()
         self.post_sensor_read_callback()
+
+    def failed_notification(self):
+        if self.failed >= self.failed_notify:
+            self.log.warning('Sensor reading has failed %s in a row.' % self.failed)
 
     def sense(self):
         try:
