@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# related files and django apps
+local_settings.py
+django-node
+node
+public/*
+
 # C extensions
 *.so
 
@@ -24,6 +30,11 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# DB dump files
+*.sql
+*.sqlite
+*.sqlite3
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
