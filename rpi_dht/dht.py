@@ -13,16 +13,12 @@ class Dht(Sensor):
     sensor_pin = 21
     cycle_sleep = 10
 
-    data = None
-    nofity = True
-
     def __init__(self, args=[]):
-        super(Dht, self).__init__(args)
-
         self.data = {
             'humidity': None,
             'temperature': None,
         }
+        super(Dht, self).__init__(args)
 
     def __str__(self):
         self.output()
@@ -32,16 +28,19 @@ class Dht(Sensor):
         # Try to grab a sensor reading.  Use the read_retry method which will retry up
         # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
         humidity, temperature = Adafruit_DHT.read_retry(self.SENSOR, self.sensor_pin)
-        self.log.info('Data from sensor: %s *C and %s' % (temperature, humidity))
+        self.log.info('Data from sensor: %s °C and %s' % (temperature, humidity))
 
         if humidity is not None and temperature is not None:
-            if data['humidity'] != humidity:
-                data['humidity'] = humidity
-                self.post_data(self.generate_post_dict(self, humidity, 2))
 
-            if data['temperature'] != temperature:
-                data['temperature'] = temperature
-                self.post_data((self.generate_post_dict(self, temperature, 1))
+            humidity = round(humidity, 2)
+            if self.data['humidity'] != humidity:
+                self.data['humidity'] = humidity
+                self.post_data(self.generate_post_dict(humidity, 2))
+
+            temperature = round(temperature, 2)
+            if self.data['temperature'] != temperature:
+                self.data['temperature'] = temperature
+                self.post_data(self.generate_post_dict(temperature, 1))
 
             self.failed = 0
         else:
@@ -63,7 +62,7 @@ class Dht(Sensor):
         out = ''
 
         if self.data:
-            out += 'Temperature = {0:0.1f}*C '.format(self.data['temperature'])
+            out += 'Temperature = {0:0.1f}°C'.format(self.data['temperature'])
             out += 'Humidity = {0:0.1f}%'.format(self.data['humidity'])
         else:
             out = 'Failed to get reading. Try again!'
