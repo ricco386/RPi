@@ -119,6 +119,10 @@ class Sensor(object):
             self.log.error('Trying to post data, but no server bas been defined!')
             raise ValueError('Server has not been defined!')
 
+        r = requests.get(self.url)
+        if not self.verify_server_response(r):
+            return False
+
         if self.token:
             headers = {
                 'Authorization': 'Token '+ self.token
@@ -129,11 +133,16 @@ class Sensor(object):
         else:
             r = requests.post(self.url, data=postdata)
 
-        if r.status_code == requests.codes.ok:
-            self.log.info("HTTP Post to %s was successful", self.url)
+        return self.verify_server_response(r)
+
+
+    def verify_server_response(self, r):
+        if r.status_code in (200, 201, 202, 203, 204, 205, 206):
+            self.log.info("HTTP %s response %s: %s to %s was successful" % (r.request.method, r.status_code, r.reason, self.url))
             return True
+
         else:
-            self.log.error("HTTP Post to %s has failed...", self.url)
+            self.log.error("HTTP %s response %s: %s to %s has failed..." % (r.request.method, r.status_code, r.reason, self.url))
             return False
 
 
