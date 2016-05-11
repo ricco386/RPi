@@ -35,12 +35,16 @@ class Dht(Sensor):
             humidity = round(humidity, 2)
             if self.data['humidity'] != humidity:
                 self.data['humidity'] = humidity
-                self.post_data(self.generate_post_dict(humidity, 2))
+
+                if self.url:
+                    self.post_data(self.generate_post_dict(humidity, 2))
 
             temperature = round(temperature, 2)
             if self.data['temperature'] != temperature:
                 self.data['temperature'] = temperature
-                self.post_data(self.generate_post_dict(temperature, 1))
+
+                if self.url:
+                    self.post_data(self.generate_post_dict(temperature, 1))
 
             self.failed = 0
         else:
