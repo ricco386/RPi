@@ -23,6 +23,12 @@ class Dht(Sensor):
     def __str__(self):
         self.output()
 
+    def set_gpio(self):
+        super(Dht, self).set_gpio()
+
+        if hasattr(self.args, 'display') and self.args.display:
+            self.sensor_read()
+
     def sensor_read_callback(self):
         super(Dht, self).sensor_read_callback()
         # Try to grab a sensor reading.  Use the read_retry method which will retry up

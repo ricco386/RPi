@@ -10,10 +10,13 @@ from sensor import Setup
 
 
 def main():
-    args = Setup().args('rpi-dht', 'Python implementation for Adafruit_DHT sensor for Raspberry Pi.').parse_args()
+    args = Setup().args('rpi-dht', 'Python implementation for Adafruit_DHT sensor for Raspberry Pi.')
+    args.add_argument('--display', action='store_true', help='Display output.')
+    args = args.parse_args()
+
     sensor = Dht(args)
 
-    if hasattr(args, 'd') and args.d:
+    if hasattr(args, 'display') and args.display:
         print(sensor.output())
     else:
         sensor.sense()
