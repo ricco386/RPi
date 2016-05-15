@@ -13,6 +13,7 @@ import requests
 class Sensor(object):
 
     NAME = 'sensor'
+    GPIO = GPIO
     sensor_pin = 0
     sensor_state = 0
     cycle_sleep = 0
@@ -75,8 +76,8 @@ class Sensor(object):
         self.log = logging.getLogger(self.NAME)
 
     def set_gpio(self):
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        self.GPIO.setmode(GPIO.BOARD)
+        self.GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def sensor_setup(self):
         self.log.debug('Initial sensor setup.')
@@ -115,7 +116,7 @@ class Sensor(object):
         except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
             self.log.info('You have interupted sensing process...')
 
-        GPIO.cleanup()
+        self.GPIO.cleanup()
 
     def post_data(self, postdata):
         if not self.url:
