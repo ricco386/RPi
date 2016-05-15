@@ -15,7 +15,7 @@ class Sensor(object):
     NAME = 'sensor'
     sensor_pin = 0
     sensor_state = 0
-    cycle_sleep = 0.1
+    cycle_sleep = 0
     thread_exit = False
 
     failed = 0
@@ -77,7 +77,9 @@ class Sensor(object):
     def set_gpio(self):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        self.sensor_read()
+
+    def sensor_setup(self):
+        self.log.debug('Initial sensor setup.')
 
     def pre_sensor_read_callback(self):
         self.log.debug('Pre-read sensor callback.')
@@ -101,6 +103,7 @@ class Sensor(object):
     def sense(self):
         try:
             self.log.debug('Starting permanent sensing process...')
+            self.sensor_setup()
 
             while not self.thread_exit:
                 self.sensor_read()
@@ -150,7 +153,6 @@ class Setup(object):
 
     def args(self, name, desc):
         ap = argparse.ArgumentParser(prog=name, description=desc)
-        ap.add_argument('-d', action='store_true', help='Display output.')
         ap.add_argument('-p', '--pin', type=int, help='Set sensor pin.')
         ap.add_argument('-l', '--log', type=str, help='Path where log will be stored.')
         ap.add_argument('-s', '--server', type=str, help='Server where data will be posted.')
