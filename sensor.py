@@ -56,8 +56,7 @@ class Sensor(object):
             self.log.error('PIN have to between 1 and 40')
             raise Exception
 
-        self.log.info('Sensor at PIN: %s' % self.sensor_pin)
-        self.set_gpio()
+        self.sensor_setup()
 
     def set_logging(self):
         logconfig = {
@@ -75,12 +74,17 @@ class Sensor(object):
         logging.basicConfig(**logconfig)
         self.log = logging.getLogger(self.NAME)
 
+    def sensor_setup(self):
+        self.log.debug('Initial sensor setup.')
+        self.log.info('Sensor at PIN: %s' % self.sensor_pin)
+        self.set_gpio()
+
+    def sensor_cleanup(self):
+        self.GPIO.cleanup()
+
     def set_gpio(self):
         self.GPIO.setmode(GPIO.BOARD)
         self.GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-    def sensor_setup(self):
-        self.log.debug('Initial sensor setup.')
 
     def pre_sensor_read_callback(self):
         self.log.debug('Pre-read sensor callback.')
@@ -104,7 +108,6 @@ class Sensor(object):
     def sense(self):
         try:
             self.log.debug('Starting permanent sensing process...')
-            self.sensor_setup()
 
             while not self.thread_exit:
                 self.sensor_read()
@@ -116,7 +119,7 @@ class Sensor(object):
         except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
             self.log.info('You have interupted sensing process...')
 
-        self.GPIO.cleanup()
+        self.sensor_cleanup()
 
     def post_data(self, postdata):
         if not self.url:
