@@ -10,7 +10,7 @@ class Dht(Sensor):
 
     SENSOR = Adafruit_DHT.DHT22
     NAME = 'DHT'
-    sensor_pin = 21
+    sensor_pin = 27
     cycle_sleep = 10
 
     def __init__(self, args=[]):
@@ -20,14 +20,15 @@ class Dht(Sensor):
         }
         super(Dht, self).__init__(args)
 
+
     def __str__(self):
         self.output()
 
     def set_gpio(self):
-        super(Dht, self).set_gpio()
+        return
 
-        if hasattr(self.args, 'display') and self.args.display:
-            self.sensor_read()
+    def sensor_cleanup(self):
+        return
 
     def sensor_read_callback(self):
         super(Dht, self).sensor_read_callback()
@@ -69,6 +70,7 @@ class Dht(Sensor):
         # Note that sometimes you won't get a reading and the results will be null
         # (because Linux can't guarantee the timing of calls to read the sensor).
         # If this happens try again!
+        self.sensor_read()
         out = ''
 
         if self.data:
