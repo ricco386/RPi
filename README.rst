@@ -23,11 +23,11 @@ Install the library by downloading with the download link on the right, unzippin
 
 Install `RPi.Sensor <https://github.com/ricco386/RPi.Sensor>`_ library::
 
-    pip install https://github.com/ricco386/RPi.Sensor/tarball/master
+    pip install https://github.com/ricco386/RPi.Sensor/tarball/master/
 
 Lastly install RPi.DHT appi::
 
-    pip install https://github.com/ricco386/RPi.DHT/tarball/master
+    pip install https://github.com/ricco386/RPi.DHT/tarball/master/
 
 **Dependencies:**
 
