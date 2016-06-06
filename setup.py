@@ -30,14 +30,14 @@ with open("README.rst", "r") as fp:
 
 setup(
     name="RPi.Sensor",
-    version="0.2.0a",
+    version="0.2.0b",
     author="Richard Kellner",
     author_email="richard.kellner@gmail.com",
     url="https://github.com/ricco386/rpi-sensor",
     description="Base class for Python objects for RPi sensors",
     long_description=sensor_long_description,
     license="MIT",
-    py_modules=["sensor",],
+    py_modules=["sensor", "utils"],
     classifiers=CLASSIFIERS,
     install_requires=DEPS,
 )
