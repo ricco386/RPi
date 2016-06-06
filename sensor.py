@@ -16,7 +16,7 @@ except ImportError:
     from ConfigParser import RawConfigParser
 
 
-class SensorX(object):
+class Sensor(object):
 
     NAME = 'Sensor'
     LOGFORMAT = '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
