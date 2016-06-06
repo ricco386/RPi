@@ -129,7 +129,6 @@ The example file is located in: %s\n\n""" % (
 
         self.sensor_cleanup()
 
-
     def post_data(self, path, postdata):
         if not self.config.has_option('server', 'hostname'):
             self.logger.error('Trying to post data, but no server bas been defined!')
@@ -161,9 +160,3 @@ The example file is located in: %s\n\n""" % (
         else:
             self.logger.error("FAILED HTTP %s response %s: %s." % (r.request.method, r.status_code, r.reason))
             return False
-
-
-if __name__ == "__main__":
-    # execute only if run as a script
-    SensorX()
-
