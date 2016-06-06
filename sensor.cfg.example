@@ -1,0 +1,19 @@
+[global]
+# Log file (required)
+# Empty value means logging to stdout
+logfile = /tmp/sensor.log
+
+# Log level (required)
+loglevel = INFO
+
+sensor_pin = 21
+node_id = # Setup NODE ID
+
+[server]
+# without trailing slash
+host = # Setup server url
+username = # Setup login username
+password = # Setup login password
+
+# Notify after X failed sensor readings
+failed_notify = 10
