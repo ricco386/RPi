@@ -3,23 +3,23 @@
 import sys
 import Adafruit_DHT
 import argparse
-from sensor import Sensor, Setup
+from sensor import Sensor
 
 
 class Dht(Sensor):
 
     SENSOR = Adafruit_DHT.DHT22
     NAME = 'DHT'
+
     sensor_pin = 27
     cycle_sleep = 10
 
-    def __init__(self, args=[]):
-        self.data = {
-            'humidity': None,
-            'temperature': None,
-        }
-        super(Dht, self).__init__(args)
+    temperature = None
+    humidity = None
 
+    def __init__(self, args=[]):
+        super(Dht, self).__init__(args)
+        self.logger.info('At your service')
 
     def __str__(self):
         self.output()
@@ -35,33 +35,32 @@ class Dht(Sensor):
         # Try to grab a sensor reading.  Use the read_retry method which will retry up
         # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
         humidity, temperature = Adafruit_DHT.read_retry(self.SENSOR, self.sensor_pin)
-        self.log.info('Data from sensor: %s *C and %s' % (temperature, humidity))
+        self.logger.info('Data from sensor: %s *C and %s' % (temperature, humidity))
 
         if humidity is not None and temperature is not None:
 
             humidity = round(humidity, 2)
-            if self.data['humidity'] != humidity:
-                self.data['humidity'] = humidity
+            if self.humidity != humidity:
+                self.humidity = humidity
 
-                if self.url:
-                    self.post_data(self.generate_post_dict(humidity, 2))
+                if self.config.has_option('server', 'hostname'):
+                    self.post_data('api/measurements/', self.generate_post_dict(humidity, 2))
 
             temperature = round(temperature, 2)
-            if self.data['temperature'] != temperature:
-                self.data['temperature'] = temperature
+            if self.temperature != temperature:
+                self.temperature = temperature
 
-                if self.url:
-                    self.post_data(self.generate_post_dict(temperature, 1))
+                if self.config.has_option('server', 'hostname'):
+                    self.post_data('api/measurements/', self.generate_post_dict(temperature, 1))
 
             self.failed = 0
         else:
             self.failed += 1
 
     def generate_post_dict(self, value, unit):
-        # TODO: hardcoded values, BAD! Re-write in better way.
         return {
-            'node': 1,
-            'sensor': 1,
+            'node': self.config.get('global', 'node_id'),
+            'sensor': self.config.get('dht', 'sensor_id'),
             'value': value,
             'unit': unit,
         }
@@ -73,9 +72,9 @@ class Dht(Sensor):
         self.sensor_read()
         out = ''
 
-        if self.data:
-            out += 'Temperature = {0:0.1f}*C'.format(self.data['temperature'])
-            out += 'Humidity = {0:0.1f}%'.format(self.data['humidity'])
+        if self.temperature or self.humidity:
+            out += 'Temperature = {0:0.1f}*C'.format(self.temperature)
+            out += 'Humidity = {0:0.1f}%'.format(self.humidity)
         else:
             out = 'Failed to get reading. Try again!'
 

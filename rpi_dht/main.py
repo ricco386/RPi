@@ -6,13 +6,15 @@
 import sys
 import argparse
 from dht import Dht
-from sensor import Setup
 
 
 def main():
-    args = Setup().args('rpi-dht', 'Python implementation for Adafruit_DHT sensor for Raspberry Pi.')
-    args.add_argument('--display', action='store_true', help='Display output.')
-    args = args.parse_args()
+
+    ap = argparse.ArgumentParser(prog='rpi-dht', description='''Python implementation for Adafruit_DHT sensor for
+    Raspberry Pi. Script loads configuration from sensor.cfg that has to be created and run in infinte loop. For more
+    info visit: https://github.com/ricco386/RPi.DHT''')
+    ap.add_argument('--display', action='store_true', help='Display output.')
+    args = ap.parse_args()
 
     sensor = Dht(args)
 
