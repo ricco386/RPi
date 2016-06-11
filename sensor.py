@@ -7,7 +7,9 @@ import os
 import sys
 import RPi.GPIO as GPIO
 from utils import parse_loglevel
+import requests
 import logging
+import  time
 try:
     # noinspection PyCompatibility
     from configparser import RawConfigParser
@@ -134,18 +136,20 @@ The example file is located in: %s\n\n""" % (
             self.logger.error('Trying to post data, but no server bas been defined!')
             raise ValueError('Server has not been defined!')
         else:
-            url = '%s/%s' % (self.config.has_option('server', 'hostname'), path)
+            url = '%s/%s' % (self.config.get('server', 'hostname'), path)
+
+        print post_data
 
         r = requests.get(url)
         if not self.verify_server_response(r):
             return False
 
-        if not self.config.has_option('server', 'token'):
+        if self.config.has_option('server', 'token'):
             headers = {
                 'Authorization': 'Token %s' % (self.config.get('server', 'token'),)
             }
             r = requests.post(url, headers=headers, data=postdata)
-        elif self.username and self.password:
+        elif self.config.has_option('server', 'username') and self.config.has_option('server', 'password'):
             r = requests.post(url, auth=(self.config.get('server', 'username'), self.config.get('server', 'password')), data=postdata)
         else:
             r = requests.post(url, data=postdata)
