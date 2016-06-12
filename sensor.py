@@ -138,8 +138,6 @@ The example file is located in: %s\n\n""" % (
         else:
             url = '%s/%s' % (self.config.get('server', 'hostname'), path)
 
-        print post_data
-
         r = requests.get(url)
         if not self.verify_server_response(r):
             return False
