@@ -1,4 +1,5 @@
 # Additional DHT section for config.cfg.example
 # Setup DHT specific options add to existing config file
-[dht]
+[DHT]
 sensor_id =
+sensor_pin = 21

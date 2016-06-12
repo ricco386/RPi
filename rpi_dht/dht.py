@@ -11,7 +11,6 @@ class Dht(Sensor):
     SENSOR = Adafruit_DHT.DHT22
     NAME = 'DHT'
 
-    sensor_pin = 27
     cycle_sleep = 10
 
     temperature = None
@@ -60,7 +59,7 @@ class Dht(Sensor):
     def generate_post_dict(self, value, unit):
         return {
             'node': self.config.get('global', 'node_id'),
-            'sensor': self.config.get('dht', 'sensor_id'),
+            'sensor': self.config.get(self.NAME, 'sensor_id'),
             'value': value,
             'unit': unit,
         }
