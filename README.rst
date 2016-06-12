@@ -3,7 +3,7 @@ RPi.DHT
 
 Python implementation for Adafruit_DHT sensor for Raspberry Pi.
 
-To connect to Raspberry Pi plug into GPIO PIN 21 and GROUD and POWER PIN. Install and execute RPi.DHT and it should work. Alternatively you can user different PIN and execute doorman with parameter: ``rpi-dht --pin pin_number``.
+To connect to Raspberry Pi plug into GPIO PIN 21 and GROUD and POWER PIN. Install and execute RPi.DHT and it should work. Alternatively you can user different PIN and configured in sensor.cfg.
 
 
 .. image:: doc/RPi.DHT.png
@@ -32,7 +32,7 @@ Lastly install RPi.DHT appi::
 **Dependencies:**
 
 - `Adafruit_DHT <https://github.com/adafruit/Adafruit_Python_DHT>`_
-- `RPi.Sensor <https://github.com/ricco386/RPi.Sensor>`_ (0.2.0+)
+- `RPi.Sensor <https://github.com/ricco386/RPi.Sensor>`_ (0.2.1+)
 
 License
 -------
