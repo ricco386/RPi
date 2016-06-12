@@ -30,7 +30,7 @@ with open("README.rst", "r") as fp:
 
 setup(
     name="RPi.Sensor",
-    version="0.2.0",
+    version="0.2.1",
     author="Richard Kellner",
     author_email="richard.kellner@gmail.com",
     url="https://github.com/ricco386/rpi-sensor",
