@@ -23,6 +23,7 @@ class Sensor(object):
     NAME = 'Sensor'
     LOGFORMAT = '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
 
+    sensor_pin = None
     thread_exit = False
     cycle_sleep = False
     failed = 0
@@ -90,6 +91,7 @@ The example file is located in: %s\n\n""" % (
         self.GPIO.cleanup()
 
     def set_gpio(self):
+        self.GPIO = GPIO
         self.GPIO.setmode(GPIO.BOARD)
         self.GPIO.setup(self.sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
