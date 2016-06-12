@@ -6,8 +6,6 @@ logfile = /tmp/sensor.log
 # Log level (required)
 loglevel = INFO
 
-sensor_pin = 21
-
 # Setup NODE ID
 node_id =
 

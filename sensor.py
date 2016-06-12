@@ -83,7 +83,7 @@ The example file is located in: %s\n\n""" % (
     def sensor_setup(self):
         self.logger.debug('Initial sensor setup.')
 
-        self.sensor_pin =  self.config.get('global', 'sensor_pin')
+        self.sensor_pin =  self.config.get(self.NAME, 'sensor_pin')
         self.logger.info('Sensor at PIN: %s' % self.sensor_pin)
         self.set_gpio()
 
