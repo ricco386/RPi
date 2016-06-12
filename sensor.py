@@ -25,6 +25,7 @@ class Sensor(object):
 
     thread_exit = False
     cycle_sleep = False
+    failed = 0
 
     def __init__(self, args=[]):
         self.logger = logging.getLogger(self.NAME)
