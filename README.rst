@@ -12,6 +12,8 @@ To connect to Raspberry Pi plug into GPIO PIN 21 and GROUD and POWER PIN. Instal
 Installation
 ------------
 
+There is an `Ansible role at galaxy <https://galaxy.ansible.com/ricco386/rpi-dht-ansible/>`_, which will do all the dependencies, config creation, and creates systemd service. Otherwise follow install instructions below:
+
 RPi.DHT needs `Adafruit Python DHT Sensor Library <https://github.com/adafruit/Adafruit_Python_DHT>`_. Make sure your system is able to compile Python extensions.On Raspbian or Debian/Ubuntu image you can ensure your system is ready by executing::
 
     sudo apt-get update
