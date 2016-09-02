@@ -64,17 +64,26 @@ class Dht(Sensor):
             'unit': unit,
         }
 
-    def output(self):
+    def output(self, desc=True, temp=False, hum=False):
+        self.logger.debug('Starting onetime sense process...')
+        self.sensor_setup()
+
         # Note that sometimes you won't get a reading and the results will be null
         # (because Linux can't guarantee the timing of calls to read the sensor).
         # If this happens try again!
         self.sensor_read()
         out = ''
 
-        if self.temperature or self.humidity:
-            out += 'Temperature = {0:0.1f}*C'.format(self.temperature)
+        if desc and (self.temperature or self.humidity):
+            out += 'Temperature = {0:0.1f}*C\n'.format(self.temperature)
             out += 'Humidity = {0:0.1f}%'.format(self.humidity)
         else:
             out = 'Failed to get reading. Try again!'
+
+        if temp and self.temperature:
+            out = str(self.temperature)
+
+        if hum and self.humidity:
+            out = str(self.humidity)
 
         return out
