@@ -1,0 +1,7 @@
+include README.rst
+include LICENSE
+include MANIFEST.in
+include setup.py
+recursive-include lookOver *.py
+recursive-include lookOver *.example
+recursive-include bin *

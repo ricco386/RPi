@@ -1,0 +1,41 @@
+[global]
+# Run in background as daemon
+#daemon = false
+# PID file location. Required in daemon mode
+#pidfile = /var/run/lookOver.pid
+
+# PIN number in which is PIR sensor connected
+# GPIO.BOARD mode is used
+pin_pir = 7
+# Let PIR sensor to calm down (stop sencing movement) on startup
+pin_pir_settle = true
+# PIN number in which is LED connected (leave empty if not connected)
+# GPIO.BOARD mode is used
+pin_led =
+
+# Absolut path to file where program logs will be stored
+# TODO: Implement - Empty value means logging to stdout
+log_file = /var/log/lookOver.log
+# Minimum log level, that will be stored in log (higher values are logged automatically)
+# (50: CRITICAL, 40: ERROR, 30: WARNING, 20: INFO, 10: DEBUG)
+log_level = 10
+
+# Camera recordings Storage path
+storage_path = /tmp
+# Check if lookOver should try to mount storage_path first
+mountable_storage = False
+
+# Recording type
+# One of image, image_sequence, video
+type = image
+# Only relevant when image_sequence is selected and stands for delay between taking pictures
+# TODO: Implement
+type_delay = 0.25
+# Camera resolution width size in pixesl
+width = 1296
+# Camera resolution height size in pixesl
+height = 730
+# Sets whether the camera’s output is horizontally flipped
+hflip = false
+# Sets whether the camera’s output is vertically flipped.
+vflip = false
