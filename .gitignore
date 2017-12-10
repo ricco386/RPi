@@ -78,3 +78,6 @@ target/
 *.swp
 .project
 .pydevproject
+
+# Ansible stuff
+*.retry

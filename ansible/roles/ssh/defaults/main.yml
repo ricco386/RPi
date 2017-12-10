@@ -1,0 +1,9 @@
+---
+# The name of ssh daemon
+sshd: ssh.service
+
+# User for whom we will create 
+ssh_user: pi
+
+# Where is ssh config is located at
+sshd_config: /etc/ssh/sshd_config

@@ -1,0 +1,4 @@
+---
+- name: Restart ssh.service
+  become: yes
+  service: name={{ sshd }} state=restarted
