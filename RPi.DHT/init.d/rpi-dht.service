@@ -1,0 +1,24 @@
+# RPi.DHT systemd service file
+#
+# INSTALL:
+#   - copy rpi-dht.conf tmpfiles configuration into /etc/tmpfiles.d/
+#   - copy rpi-dht.service into /etc/systemd/system/
+#   - run: systemd-tmpfiles --create /etc/tmpfiles.d/rpi-dht.conf
+#   - run: systemctl enable rpi-dht.service && systemctl start rpi-dht.service
+
+[Unit]
+Description=RPi.DHT
+Documentation=https://github.com/ricco386/RPi.DHT
+After=network.target
+
+[Service]
+Type=simple
+User=root
+PIDFile=/run/rpi-dht/rpi-dht.pid
+ExecStart=/usr/local/bin/rpi-dht 
+Restart=on-failure
+RestartPreventExitStatus=2
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
