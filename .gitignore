@@ -3,19 +3,25 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+<<<<<<< HEAD
 # related files and django apps
 local_settings.py
 django-node
 node
 public/*
 
+=======
+>>>>>>> RPi.LCD/master
 # C extensions
 *.so
 
 # Distribution / packaging
 .Python
 env/
+<<<<<<< HEAD
 envs/
+=======
+>>>>>>> RPi.LCD/master
 build/
 develop-eggs/
 dist/
@@ -31,11 +37,14 @@ var/
 .installed.cfg
 *.egg
 
+<<<<<<< HEAD
 # DB dump files
 *.sql
 *.sqlite
 *.sqlite3
 
+=======
+>>>>>>> RPi.LCD/master
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
