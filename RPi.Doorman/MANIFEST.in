@@ -1,0 +1,7 @@
+include README.rst
+include LICENSE
+include MANIFEST.in
+include setup.py
+recursive-include rpi_doorman *.py
+recursive-include init.d *
+recursive-include bin *
