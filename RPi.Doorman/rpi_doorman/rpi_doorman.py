@@ -23,9 +23,10 @@ class Doorman(Sensor):
             return 'Magnetic contact is closed'
 
     def sensor_read_callback(self):
-        self.sensor_state = 1  # self.GPIO.input(self.PIN)
+        self.sensor_state = self.GPIO.input(self.PIN)
 
         if self.sensor_state != self.door_state:
-            self.logger.debug('Changing magnetic contact state from %s to %s', self.door_state, self.sensor_state)
+            self.logger.debug('Sensor %s changing magnetic contact state from %s to %s', self.NAME, self.door_state,
+                              self.sensor_state)
             self.door_state = self.sensor_state
             self.logger.info(self.get_door_state())
