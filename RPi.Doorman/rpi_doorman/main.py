@@ -14,6 +14,7 @@ def setup_args():
             )
     ap.add_argument('-s', '--status', action='store_true', help='Current door status will be shown.')
     ap.add_argument('-p', '--pin', type=int, help='Pin number, for GPIO magnetic contact switch (door sensor).')
+    ap.add_argument('--gpio_bcm', action='store_true', help='Switch PIN to GPIO BCM numbers.')
     ap.add_argument('--failed_notify', type=int, help='Number of failed sensor reading before alerting.')
     ap.add_argument('--cycle_sleep', type=int, help='Number of failed sensor reading before alerting.')
 
@@ -23,6 +24,11 @@ def setup_args():
 def main():
     d = Doorman()
     args = setup_args()
+
+    if hasattr(args, 'gpio_bcm') and args.gpio_bcm:
+        d.GPIO_BCM = True
+        d.logger.info('Sensor %s mode set to GPIO.BCM (set by script parameter, overwriting configuration value).',
+                      d.NAME)
 
     if hasattr(args, 'pin') and args.pin:
         d.PIN = args.pin

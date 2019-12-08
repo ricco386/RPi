@@ -3,7 +3,6 @@
 #
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
-import sys
 import argparse
 from dht import Dht
 
@@ -14,6 +13,7 @@ def setup_args():
     info visit: https://github.com/ricco386/RPi.DHT''')
     ap.add_argument('-s', '--status', action='store_true', help='Current DHT sensor status will be shown.')
     ap.add_argument('-p', '--pin', type=int, help='Pin number, for GPIO magnetic contact switch (door sensor).')
+    ap.add_argument('--gpio_bcm', action='store_true', help='Switch PIN to GPIO BCM numbers.')
     ap.add_argument('--failed_notify', type=int, help='Number of failed sensor reading before alerting.')
     ap.add_argument('--cycle_sleep', type=int, help='Number of failed sensor reading before alerting.')
     ap.add_argument('--temperature', action='store_true', help='Display temperature in *C.')
@@ -25,6 +25,11 @@ def setup_args():
 def main():
     d = Dht()
     args = setup_args()
+
+    if hasattr(args, 'gpio_bcm') and args.gpio_bcm:
+        d.GPIO_BCM = True
+        d.logger.info('Sensor %s mode set to GPIO.BCM (set by script parameter, overwriting configuration value).',
+                      d.NAME)
 
     if hasattr(args, 'pin') and args.pin:
         d.PIN = args.pin
