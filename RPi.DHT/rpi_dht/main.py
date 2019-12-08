@@ -8,28 +8,49 @@ import argparse
 from dht import Dht
 
 
-def main():
-
+def setup_args():
     ap = argparse.ArgumentParser(prog='rpi-dht', description='''Python implementation for Adafruit_DHT sensor for
     Raspberry Pi. Script loads configuration from sensor.cfg that has to be created and run in infinte loop. For more
     info visit: https://github.com/ricco386/RPi.DHT''')
-    ap.add_argument('--display', action='store_true', help='Display sensor reading described output.')
+    ap.add_argument('-s', '--status', action='store_true', help='Current DHT sensor status will be shown.')
+    ap.add_argument('-p', '--pin', type=int, help='Pin number, for GPIO magnetic contact switch (door sensor).')
+    ap.add_argument('--failed_notify', type=int, help='Number of failed sensor reading before alerting.')
+    ap.add_argument('--cycle_sleep', type=int, help='Number of failed sensor reading before alerting.')
     ap.add_argument('--temperature', action='store_true', help='Display temperature in *C.')
     ap.add_argument('--humidity', action='store_true', help='Display humidity in percent.')
-    args = ap.parse_args()
 
-    sensor = Dht(args)
+    return ap.parse_args()
 
-    if hasattr(args, 'display') and args.display:
-        print(sensor.output())
+
+def main():
+    d = Dht()
+    args = setup_args()
+
+    if hasattr(args, 'pin') and args.pin:
+        d.PIN = args.pin
+        d.logger.info('Sensor %s at PIN: %s (set by script parameter, overwriting configuration value).', d.NAME, d.PIN)
+
+    if hasattr(args, 'failed_notify') and args.failed_notify:
+        d.FAILED_NOTIF = args.failed_notify
+        d.logger.debug('Sensor %s at failed_notify: %s (set by script parameter, overwriting configuration value).',
+                       d.NAME, d.FAILED_NOTIF)
+
+    if hasattr(args, 'cycle_sleep') and args.cycle_sleep:
+        d.SLEEP = args.cycle_sleep
+        d.logger.debug('Sensor %s at cycle_sleep: %s (set by script parameter, overwriting configuration value).',
+                       d.NAME, d.SLEEP)
+
+    if hasattr(args, 'status') and args.status:
+        d.sensor_read()
+        print(d.output())
     elif hasattr(args, 'temperature') and args.temperature:
-        print(sensor.output(temp=True, desc=False))
+        d.sensor_read()
+        print(d.output(temp=True, desc=False))
     elif hasattr(args, 'humidity') and args.humidity:
-        print(sensor.output(hum=True, desc=False))
+        d.sensor_read()
+        print(d.output(hum=True, desc=False))
     else:
-        sensor.sense()
-
-    sys.exit(0)
+        d.sense()
 
 
 if __name__ == "__main__":
