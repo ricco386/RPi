@@ -1,0 +1,3 @@
+[submodule "RPi.Sensor"]
+	path = RPi.Sensor
+	url = git@github.com:ricco386/RPi.Sensor.git
