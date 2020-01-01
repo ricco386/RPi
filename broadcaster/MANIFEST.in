@@ -1,6 +1,0 @@
-include README.rst
-include LICENSE
-include MANIFEST.in
-include setup.py
-recursive-include broadcaster *.py
-recursive-include bin *
