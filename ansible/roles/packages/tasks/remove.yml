@@ -1,9 +1,0 @@
----
-- name: Remove packages from RPi
-  become: yes
-  apt: name={{ item }} state=present
-  with_items:
-    - "{{ remove_system_packages }}"
-  tags:
-    - packages
-    - remove

@@ -1,7 +1,0 @@
----
-- hosts: raspberrys
-  vars:
-    - ssh_identity_key: /home/ricco/.ssh/id_rsa.pub 
-  roles:
-    - ssh
-    - packages
