@@ -19,7 +19,7 @@ def setup_args():
 
 
 def main():
-    pir = PIR()
+    pir = PIR(name='PIR')
     args = setup_args()
 
     if hasattr(args, 'gpio_bcm') and args.gpio_bcm:
