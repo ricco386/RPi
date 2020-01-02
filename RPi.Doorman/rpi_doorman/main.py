@@ -14,37 +14,24 @@ def setup_args():
             )
     ap.add_argument('-s', '--status', action='store_true', help='Current door status will be shown.')
     ap.add_argument('-p', '--pin', type=int, help='Pin number, for GPIO magnetic contact switch (door sensor).')
+    ap.add_argument('--name', type=str, help='Set sensor name for logging.')
     ap.add_argument('--gpio_bcm', action='store_true', help='Switch PIN to GPIO BCM numbers.')
     ap.add_argument('--failed_notify', type=int, help='Number of failed sensor reading before alerting.')
-    ap.add_argument('--cycle_sleep', type=int, help='Number of failed sensor reading before alerting.')
+    ap.add_argument('--cycle_sleep', type=float, help='Sleep time in the loop to slow down sensor readings.')
 
     return ap.parse_args()
 
 
 def main():
-    d = Doorman()
-    args = setup_args()
+    params = setup_args()
+    name = 'Magnetic Sensor'
 
-    if hasattr(args, 'gpio_bcm') and args.gpio_bcm:
-        d.GPIO_BCM = True
-        d.logger.info('Sensor %s mode set to GPIO.BCM (set by script parameter, overwriting configuration value).',
-                      d.NAME)
+    if hasattr(params, 'name') and params.name:
+        name = params.name
 
-    if hasattr(args, 'pin') and args.pin:
-        d.PIN = args.pin
-        d.logger.info('Sensor %s at PIN: %s (set by script parameter, overwriting configuration value).', d.NAME, d.PIN)
+    d = Doorman(name=name, params=params)
 
-    if hasattr(args, 'failed_notify') and args.failed_notify:
-        d.FAILED_NOTIF = args.failed_notify
-        d.logger.debug('Sensor %s at failed_notify: %s (set by script parameter, overwriting configuration value).',
-                       d.NAME, d.FAILED_NOTIF)
-
-    if hasattr(args, 'cycle_sleep') and args.cycle_sleep:
-        d.SLEEP = args.cycle_sleep
-        d.logger.debug('Sensor %s at cycle_sleep: %s (set by script parameter, overwriting configuration value).',
-                       d.NAME, d.SLEEP)
-
-    if hasattr(args, 'status') and args.status:
+    if hasattr(params, 'status') and params.status:
         d.sensor_read()
         print(d.get_door_state())
     else:
