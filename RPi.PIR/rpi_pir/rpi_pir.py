@@ -9,7 +9,7 @@ from sensor import Sensor
 class PIR(Sensor):
 
     NAME = 'PIR'
-    PIN = 21
+    PIN = 7
 
     sensor_state = 0
     previous_state = 0
@@ -31,4 +31,4 @@ class PIR(Sensor):
         self.sensor_state = self.GPIO.input(self.PIN)
 
         if self.sensor_state != self.previous_state:
-            self.logger.debug('Sensor %s state is %s.', self.NAME, "HIGH" if self.sensor_state else "LOW")
+            self.logger.info('Sensor %s state is %s.', self.NAME, "HIGH" if self.sensor_state else "LOW")
