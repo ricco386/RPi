@@ -3,7 +3,6 @@
 #
 # This software is licensed as described in the README.rst and LICENSE
 # files, which you should have received as part of this distribution.
-
 import os
 from distutils.core import setup
 

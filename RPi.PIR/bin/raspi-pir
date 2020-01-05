@@ -8,7 +8,6 @@
 # target system where the runner script is in /usr/bin
 #
 # So, you don't need anything special - no fancy path tricks.
-
 from raspi_pir.main import main
 
 main()

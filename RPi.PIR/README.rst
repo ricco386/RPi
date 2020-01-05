@@ -5,7 +5,7 @@ PIR sensor state monitor, completely written in Python.
 
 RPi.PIR is using PIR sensor with Raspberry Pi GPIO. Software might work with other sensors as well but have not been tested.
 
-To connect to Raspberry Pi plug into GPIO PIN 11 and POWER PIN. Install and execute raspi-pir and it should work. Alternatively you can user different PIN and execute raspi-pir with parameter: ``raspi-pir --pin pin_number``.
+To connect to Raspberry Pi plug into GPIO PIN 7 (default) and POWER PIN. Install and execute raspi-pir and it should work. Alternatively you can user different PIN and execute raspi-pir with parameter: ``raspi-pir --pin pin_number``.
 
 Pre-Installation requirements
 -----------------------------
