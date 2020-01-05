@@ -20,7 +20,7 @@ Installation
 
 - Install the latest released version using pip::
 
-    python3 -m pip install .
+    python3 -m pip install --upgrade .
 
 - Make sure all dependencies (listed below) are installed (done automatically when installing via pip)
 - The ``raspi-mc`` command should be installed somewhere in your ``PATH`` (done automatically when installing via pip), make sure `raspi-mc.service` has corect path in `ExecStart` set to `raspi-mc` executable.
@@ -46,6 +46,11 @@ You have to create a `.sensor.cfg` file and place into `/home/pi/.sensor.cfg` yo
 `raspi-mc` also support parameters to overwrite config parameters. For more info run::
 
     raspi-mc --help
+
+Zabbix support
+--------------
+
+In directory `zabbix_template` there is a Zabbix template that can be imported to Zabbix and monitor systemd process if it is running and how much memorry it consumes. It also supports Zabbix trapper `rpi.mc-state` that can receive a sensor state changes.
 
 License
 -------
