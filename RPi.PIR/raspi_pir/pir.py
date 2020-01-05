@@ -5,17 +5,20 @@
 # which you should have received as part of this distribution.
 import time
 from sensor import Sensor
+from utils import zabbix_sender
 
 
 class PIR(Sensor):
 
     NAME = 'PIR'
+    TRAPPER = 'rpi.pir-state'
     PIN = 7
 
     sensor_state = 0
     previous_state = 0
-    change_timestamp = 0.0
-    change_delay = 30
+    change_delay = 60
+    last_high = 0.0
+    low_notif = True
 
     def settledown(self):
         self.logger.debug('Sensor %s waiting to settle down ...', self.NAME)
@@ -25,8 +28,8 @@ class PIR(Sensor):
 
         self.logger.info('Sensor %s state is LOW.', self.NAME)
 
-    def gpio_setup(self, gpio_bcm=False):
-        super().gpio_setup(gpio_bcm)
+    def gpio_setup(self):
+        super().gpio_setup()
         self.settledown()
 
     def pre_sensor_read_callback(self):
@@ -40,11 +43,21 @@ class PIR(Sensor):
 
     def post_sensor_read_callback(self):
         if self.sensor_state != self.previous_state:
-            if self.change_timestamp < time.time() - self.change_delay:
-                # Sensor change state time delay has passed, lets alert an event
-                self.logger.info('Sensor %s state is %s.', self.NAME, "HIGH" if self.sensor_state else "LOW")
-            else:
-                self.change_timestamp = time.time()  # Reset the timestamp in order 
-                self.sensor_state = self.previous_state  # Return to the state before reading
+            self.logger.info('Sensor %s state is %s.', self.NAME, "HIGH" if self.sensor_state else "LOW")
+
+            if self.sensor_state:
+                self.last_high = time.time()
+                self.low_notif = True
+
+                zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
+                self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME,
+                                  self.TRAPPER, self.sensor_state)
+
+        if not self.sensor_state and self.last_high < time.time() - self.change_delay and self.low_notif:
+            self.low_notif = False
+
+            zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
+            self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME, self.TRAPPER,
+                              self.sensor_state)
 
         super().post_sensor_read_callback()

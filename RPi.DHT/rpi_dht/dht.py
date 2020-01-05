@@ -14,12 +14,6 @@ class Dht(Sensor):
     temperature = None
     humidity = None
 
-    def gpio_setup(self, gpio_bcm=False):
-        pass
-
-    def gpio_cleanup(self):
-        pass
-
     def sensor_read_callback(self):
         # Try to grab a sensor reading.  Use the read_retry method which will retry up
         # to 15 times to get a sensor reading (waiting 2 seconds between each retry).

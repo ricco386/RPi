@@ -4,11 +4,13 @@
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
 from sensor import Sensor
+from utils import zabbix_sender
 
 
 class MC(Sensor):
 
     NAME = 'Magnetic_Contact'
+    TRAPPER = 'rpi.mc-state'
     PIN = 11
 
     sensor_state = 0
@@ -30,3 +32,7 @@ class MC(Sensor):
                               self.sensor_state)
             self.door_state = self.sensor_state
             self.logger.info(self.get_door_state())
+
+            zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
+            self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME, self.TRAPPER,
+                              self.sensor_state)
