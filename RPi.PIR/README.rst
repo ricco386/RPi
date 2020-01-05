@@ -55,6 +55,11 @@ You have to create a `.sensor.cfg` file and place into `/home/pi/.sensor.cfg` yo
 
     raspi-pir --help
 
+Zabbix support
+--------------
+
+In directory `zabbix_template` there is a Zabbix template that can be imported to Zabbix and monitor systemd process if it is running and how much memorry it consumes. It also supports Zabbix trapper `rpi.pir-state` that can receive a sensor state changes.
+
 License
 -------
 

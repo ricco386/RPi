@@ -5,7 +5,7 @@ Magnetic contact state monitor, completely written in Python.
 
 RPi.MC is using adafruit magnetic contact switch (door/window sensor), with Raspberry Pi GPIO. Software might work with other sensors as well but have not been tested.
 
-To connect to Raspberry Pi plug into GPIO PIN 11 and POWER PIN. Install and execute raspi-mc and it should work. Alternatively you can user different PIN and execute raspi-mc with parameter: ``raspi-mc --pin pin_number``.
+To connect to Raspberry Pi plug into GPIO PIN 11 (default) and POWER PIN. Install and execute raspi-mc and it should work. Alternatively you can user different PIN and execute raspi-mc with parameter: ``raspi-mc --pin pin_number``.
 
 Pre-Installation requirements
 -----------------------------

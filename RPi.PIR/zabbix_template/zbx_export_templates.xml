@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.0</version>
-    <date>2020-01-05T23:27:58Z</date>
+    <date>2020-01-05T23:24:01Z</date>
     <groups>
         <group>
             <name>RPi</name>
@@ -9,8 +9,8 @@
     </groups>
     <templates>
         <template>
-            <template>Template Sensor Magnetic contact</template>
-            <name>Template Sensor Magnetic contact</name>
+            <template>Template Sensor PIR</template>
+            <name>Template Sensor PIR</name>
             <description/>
             <groups>
                 <group>
@@ -19,16 +19,16 @@
             </groups>
             <applications>
                 <application>
-                    <name>Magnetic contact</name>
+                    <name>PIR</name>
                 </application>
             </applications>
             <items>
                 <item>
-                    <name>Used memory of raspi-mc</name>
+                    <name>Used memory of raspi-pir</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>proc.mem[,,,/home/pi/.local/bin/raspi-mc]</key>
+                    <key>proc.mem[,,,/home/pi/.local/bin/raspi-pir]</key>
                     <delay>150s</delay>
                     <history>30d</history>
                     <trends>365d</trends>
@@ -55,7 +55,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Magnetic contact</name>
+                            <name>PIR</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -83,11 +83,11 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>Number of raspi-mc processes</name>
+                    <name>Number of raspi-pir processes</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>proc.num[,,,/home/pi/.local/bin/raspi-mc]</key>
+                    <key>proc.num[,,,/home/pi/.local/bin/raspi-pir]</key>
                     <delay>60s</delay>
                     <history>30d</history>
                     <trends>365d</trends>
@@ -114,7 +114,7 @@
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Magnetic contact</name>
+                            <name>PIR</name>
                         </application>
                     </applications>
                     <valuemap/>
@@ -142,14 +142,14 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>Magnetic contact state</name>
+                    <name>PIR sensor state</name>
                     <type>2</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>rpi.mc-state</key>
+                    <key>rpi.pir-state</key>
                     <delay>0</delay>
                     <history>20d</history>
-                    <trends>3650d</trends>
+                    <trends>365d</trends>
                     <status>0</status>
                     <value_type>3</value_type>
                     <allowed_hosts/>
@@ -169,16 +169,16 @@
                     <publickey/>
                     <privatekey/>
                     <port/>
-                    <description>0 - Magnetic contact is CLOSED&#13;
-1 - Magnetic contact is OPEN</description>
+                    <description>0 - PIR is STILL&#13;
+1 - PIR detecting MOVEMENT</description>
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
-                            <name>Magnetic contact</name>
+                            <name>PIR</name>
                         </application>
                     </applications>
                     <valuemap>
-                        <name>Magnetic contact state</name>
+                        <name>PIR sensor state</name>
                     </valuemap>
                     <logtimefmt/>
                     <preprocessing/>
@@ -213,27 +213,10 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template Sensor Magnetic contact:rpi.mc-state.last(#1)}=1</expression>
-            <recovery_mode>1</recovery_mode>
-            <recovery_expression>{Template Sensor Magnetic contact:rpi.mc-state.last(#1)}=0</recovery_expression>
-            <name>Magnetic contact OPEN on {HOST.NAME}</name>
-            <correlation_mode>0</correlation_mode>
-            <correlation_tag/>
-            <url/>
-            <status>0</status>
-            <priority>2</priority>
-            <description>1 - Open&#13;
-0 - Closed</description>
-            <type>0</type>
-            <manual_close>0</manual_close>
-            <dependencies/>
-            <tags/>
-        </trigger>
-        <trigger>
-            <expression>{Template Sensor Magnetic contact:proc.num[,,,/home/pi/.local/bin/raspi-mc].last(0)}=0</expression>
+            <expression>{Template Sensor PIR:proc.num[,,,/home/pi/.local/bin/raspi-pir].last(0)}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
-            <name>No raspi-mc process running on {HOST.NAME}</name>
+            <name>No raspi-pir process running on {HOST.NAME}</name>
             <correlation_mode>0</correlation_mode>
             <correlation_tag/>
             <url/>
@@ -245,18 +228,35 @@
             <dependencies/>
             <tags/>
         </trigger>
+        <trigger>
+            <expression>{Template Sensor PIR:rpi.pir-state.last(#1)}=1</expression>
+            <recovery_mode>1</recovery_mode>
+            <recovery_expression>{Template Sensor PIR:rpi.pir-state.last(#1)}=0</recovery_expression>
+            <name>PIR detecting movement on {HOST.NAME}</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>2</priority>
+            <description>1 - Movement detected&#13;
+0 - Nothing is moving</description>
+            <type>0</type>
+            <manual_close>0</manual_close>
+            <dependencies/>
+            <tags/>
+        </trigger>
     </triggers>
     <value_maps>
         <value_map>
-            <name>Magnetic contact state</name>
+            <name>PIR sensor state</name>
             <mappings>
                 <mapping>
                     <value>0</value>
-                    <newvalue>Closed</newvalue>
+                    <newvalue>STILL</newvalue>
                 </mapping>
                 <mapping>
                     <value>1</value>
-                    <newvalue>Open</newvalue>
+                    <newvalue>MOVEMENT</newvalue>
                 </mapping>
             </mappings>
         </value_map>
