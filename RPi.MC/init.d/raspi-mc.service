@@ -8,14 +8,14 @@
 
 [Unit]
 Description=RPi.MC - Magnetic contact state monitor
-Documentation=https://github.com/ricco386/RPi
+Documentation=https://github.com/ricco386/RPi/tree/master/RPi.MC
 After=network.target
 
 [Service]
 Type=simple
 User=pi
 PIDFile=/run/raspi-mc/raspi-mc.pid
-ExecStart=/usr/local/bin/raspi-mc
+ExecStart=/home/pi/.local/bin/raspi-mc
 Restart=on-failure
 RestartPreventExitStatus=2
 RestartSec=30

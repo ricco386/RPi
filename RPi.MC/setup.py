@@ -1,18 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # This software is licensed as described in the README.rst and LICENSE
 # files, which you should have received as part of this distribution.
 
 import os
-import sys
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from distutils.core import setup
 
 # noinspection PyPep8Naming
-from .raspi_mc import __version__ as VERSION
+from raspi_mc import __version__ as VERSION
 
 read = lambda fname: open(os.path.join(os.path.dirname(__file__), fname)).read()
 
@@ -32,7 +28,7 @@ CLASSIFIERS = [
 ]
 
 packages = [
-    'rpi_doorman',
+    'raspi_mc',
 ]
 
 setup(
