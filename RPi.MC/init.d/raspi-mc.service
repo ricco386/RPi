@@ -1,0 +1,24 @@
+# RPi.MC systemd service file
+#
+# INSTALL:
+#   - copy raspi-mc.conf tmpfiles configuration into /etc/tmpfiles.d/
+#   - copy raspi-mc.service into /etc/systemd/system/
+#   - run: systemd-tmpfiles --create /etc/tmpfiles.d/raspi-mc.conf
+#   - run: systemctl enable raspi-mc.service && systemctl start raspi-mc.service
+
+[Unit]
+Description=RPi.MC - Magnetic contact state monitor
+Documentation=https://github.com/ricco386/RPi
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+PIDFile=/run/raspi-mc/raspi-mc.pid
+ExecStart=/usr/local/bin/raspi-mc
+Restart=on-failure
+RestartPreventExitStatus=2
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

@@ -6,10 +6,10 @@
 from sensor import Sensor
 
 
-class Doorman(Sensor):
+class MC(Sensor):
 
     NAME = 'Magnetic_Contact'
-    PIN = 16
+    PIN = 11
 
     sensor_state = 0
     door_state = 2  # Set unknown value, due to initial reading

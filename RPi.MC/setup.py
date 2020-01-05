@@ -12,7 +12,7 @@ except ImportError:
     from distutils.core import setup
 
 # noinspection PyPep8Naming
-from rpi_doorman import __version__ as VERSION
+from .raspi_mc import __version__ as VERSION
 
 read = lambda fname: open(os.path.join(os.path.dirname(__file__), fname)).read()
 
@@ -26,9 +26,8 @@ CLASSIFIERS = [
     'Operating System :: POSIX :: Linux',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 3',
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 4 - Beta',
     'Topic :: Utilities'
 ]
 
@@ -37,16 +36,16 @@ packages = [
 ]
 
 setup(
-    name='rpi-doorman',
+    name='RPi.MC',
     version=VERSION,
-    description='Door state monitor',
+    description='Magnetic contact state monitor',
     long_description=read('README.rst'),
-    author='Richard Kellner',
+    author='Richard von Kellner',
     author_email='richard.kellner [at] gmail.com',
-    url='https://github.com/ricco386/rpi-doorman/',
+    url='https://github.com/ricco386/RPi/',
     license='MIT',
     packages=packages,
-    scripts=['bin/rpi-doorman'],
+    scripts=['bin/raspi-mc'],
     install_requires=DEPS,
     platforms='any',
     classifiers=CLASSIFIERS,

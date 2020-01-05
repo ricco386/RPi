@@ -5,7 +5,7 @@
 # which you should have received as part of this distribution.
 
 import argparse
-from rpi_doorman import Doorman
+from .magnetic_contact import MC
 
 
 def setup_args():
@@ -24,12 +24,12 @@ def setup_args():
 
 def main():
     params = setup_args()
-    name = 'Magnetic Sensor'
+    name = 'Magnetic Contact'
 
     if hasattr(params, 'name') and params.name:
         name = params.name
 
-    d = Doorman(name=name, params=params)
+    d = MC(name=name, params=params)
 
     if hasattr(params, 'status') and params.status:
         d.sensor_read()

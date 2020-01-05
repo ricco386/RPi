@@ -1,9 +1,9 @@
 import unittest
-from test_doorman_object import DoormanObjectTestCase
+from .test_mc_object import MCObjectTestCase
 
 def create_suite():
     test_suite = unittest.TestSuite()
-    test_suite.addTest(DoormanObjectTestCase())
+    test_suite.addTest(MCObjectTestCase())
     return test_suite
 
 
@@ -12,4 +12,3 @@ if __name__ == '__main__':
 
    runner=unittest.TextTestRunner()
    runner.run(suite)
-
