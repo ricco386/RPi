@@ -1,17 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
-
 import argparse
 from .magnetic_contact import MC
 
 
 def setup_args():
-    ap = argparse.ArgumentParser(prog='doorman',
-            description='RPi.Doorman is using adafruit magnetic contact switch (door sensor), will permanently sense for door status and its changes.'
-            )
+    ap = argparse.ArgumentParser(prog='raspi-mc', description='RPi.MC is using adafruit magnetic contact switch (door '
+                                                              'sensor), will permanently sense for door status and its '
+                                                              'changes.')
     ap.add_argument('-s', '--status', action='store_true', help='Current door status will be shown.')
     ap.add_argument('-p', '--pin', type=int, help='Pin number, for GPIO magnetic contact switch (door sensor).')
     ap.add_argument('--name', type=str, help='Set sensor name for logging.')

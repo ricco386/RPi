@@ -12,7 +12,7 @@ from raspi_mc import __version__ as VERSION
 
 read = lambda fname: open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-DEPS = ['RPi.GPIO',]
+DEPS = ['RPi.Sensor',]
 
 CLASSIFIERS = [
     'Environment :: Console',
@@ -38,7 +38,7 @@ setup(
     long_description=read('README.rst'),
     author='Richard von Kellner',
     author_email='richard.kellner [at] gmail.com',
-    url='https://github.com/ricco386/RPi/',
+    url='https://github.com/ricco386/RPi/tree/master/RPi.MC',
     license='MIT',
     packages=packages,
     scripts=['bin/raspi-mc'],

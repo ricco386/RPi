@@ -7,6 +7,14 @@ RPi.MC is using adafruit magnetic contact switch (door/window sensor), with Rasp
 
 To connect to Raspberry Pi plug into GPIO PIN 11 and POWER PIN. Install and execute raspi-mc and it should work. Alternatively you can user different PIN and execute raspi-mc with parameter: ``raspi-mc --pin pin_number``.
 
+Pre-Installation requirements
+-----------------------------
+
+- Update system and install required dependencies::
+
+    sudo apt-get update
+    sudo apt-get install build-essential python3-dev python3-pip
+
 Installation
 ------------
 
@@ -24,7 +32,7 @@ Installation
 
 - Make sure all dependencies (listed below) are installed (done automatically when installing via pip)
 - The ``raspi-mc`` command should be installed somewhere in your ``PATH`` (done automatically when installing via pip), make sure `raspi-mc.service` has corect path in `ExecStart` set to `raspi-mc` executable.
-- Systemd scripts are available: https://github.com/ricco386/RPi/tree/master/RPi.PIR/init.d to install them you will need root privileges, so we execute them as sudo::
+- Systemd scripts are available: https://github.com/ricco386/RPi/tree/master/RPi.MC/init.d to install them you will need root privileges, so we execute them as sudo::
 
     sudo cp init.d/raspi-mc.conf /etc/tmpfiles.d/
     sudo cp init.d/raspi-mc.service /etc/systemd/system/
