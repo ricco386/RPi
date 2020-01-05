@@ -1,0 +1,24 @@
+# RPi.PIR systemd service file
+#
+# INSTALL:
+#   - copy raspi-pir.conf tmpfiles configuration into /etc/tmpfiles.d/
+#   - copy raspi-pir.service into /etc/systemd/system/
+#   - run: systemd-tmpfiles --create /etc/tmpfiles.d/raspi-pir.conf
+#   - run: systemctl enable raspi-pir.service && systemctl start raspi-pir.service
+
+[Unit]
+Description=RPi.PIR - PIR sensor movement monitor
+Documentation=https://github.com/ricco386/RPi/tree/master/RPi.PIR
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+PIDFile=/run/raspi-sensors/raspi-pir.pid
+ExecStart=/home/pi/.local/bin/raspi-pir
+Restart=on-failure
+RestartPreventExitStatus=2
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
