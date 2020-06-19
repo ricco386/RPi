@@ -17,6 +17,7 @@ def setup_args():
     ap.add_argument('--gpio_bcm', action='store_true', help='Switch PIN to GPIO BCM numbers.')
     ap.add_argument('--failed_notify', type=int, help='Number of failed sensor reading before alerting.')
     ap.add_argument('--cycle_sleep', type=float, help='Sleep time in the loop to slow down sensor readings.')
+    ap.add_argument('--mqtt_topic', type=str, help='Set topic for MQTT where sensor will publish data.')
     ap.add_argument('--temperature', action='store_true', help='Display temperature in *C.')
     ap.add_argument('--humidity', action='store_true', help='Display humidity in percent.')
 

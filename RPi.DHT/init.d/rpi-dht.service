@@ -7,13 +7,13 @@
 #   - run: systemctl enable rpi-dht.service && systemctl start rpi-dht.service
 
 [Unit]
-Description=RPi.DHT
-Documentation=https://github.com/ricco386/RPi.DHT
+Description=RPi.DHT - Temperature & Humidity monitor
+Documentation=https://github.com/ricco386/RPi
 After=network.target
 
 [Service]
 Type=simple
-User=root
+User=pi
 PIDFile=/run/rpi-dht/rpi-dht.pid
 ExecStart=/usr/local/bin/rpi-dht 
 Restart=on-failure
