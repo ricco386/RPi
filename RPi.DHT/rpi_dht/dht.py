@@ -18,8 +18,8 @@ class Dht(Sensor):
         # Try to grab a sensor reading.  Use the read_retry method which will retry up
         # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
         self.humidity, self.temperature = Adafruit_DHT.read_retry(self.SENSOR, self.PIN)
-        self.nofity(topic='%s/temperature' % self.mqtt_topic, payload=self.temperature)
-        self.nofity(topic='%s/humidity' % self.mqtt_topic, payload=self.humidity)
+        self.notify(topic='%s/temperature' % self.mqtt_topic, payload=self.temperature)
+        self.notify(topic='%s/humidity' % self.mqtt_topic, payload=self.humidity)
         self.logger.info('Sensor %s read data: %s *C and %s', self.NAME, self.temperature, self.humidity)
 
         if self.humidity is not None and self.temperature is not None:
