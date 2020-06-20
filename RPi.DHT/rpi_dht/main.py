@@ -4,7 +4,7 @@
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
 import argparse
-from dht import Dht
+from rpi_dht.dht import Dht
 
 
 def setup_args():
