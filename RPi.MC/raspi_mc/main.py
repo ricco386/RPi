@@ -6,7 +6,7 @@
 import argparse
 
 from raspi_sensor.main import setup_default_args
-from .magnetic_contact import MC
+from raspi_mc.magnetic_contact import MC
 
 
 def setup_args():

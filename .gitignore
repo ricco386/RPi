@@ -16,6 +16,7 @@ public/*
 .Python
 env/
 envs/
+envs3/
 build/
 develop-eggs/
 dist/

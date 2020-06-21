@@ -6,7 +6,7 @@
 import argparse
 
 from raspi_sensor.main import setup_default_args
-from .dht import Dht
+from raspi_dht.dht import Dht
 
 
 def setup_args():

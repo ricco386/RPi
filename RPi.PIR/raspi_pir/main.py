@@ -6,7 +6,7 @@
 import argparse
 
 from raspi_sensor.main import setup_default_args
-from .pir import PIR
+from raspi_pir.pir import PIR
 
 
 def setup_args():
