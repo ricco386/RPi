@@ -4,8 +4,9 @@
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
 import time
-from sensor import Sensor
-from utils import zabbix_sender
+
+from raspi_sensor.sensor import Sensor
+from raspi_sensor.zabbix import zabbix_sender
 
 
 class PIR(Sensor):

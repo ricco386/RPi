@@ -38,7 +38,7 @@ setup(
     long_description=read('README.rst'),
     author='Richard von Kellner',
     author_email='richard.kellner [at] gmail.com',
-    url='https://github.com/ricco386/RPi/tree/master/RPi.MC',
+    url='https://github.com/ricco386/RPi/tree/master/RPi',
     license='MIT',
     packages=packages,
     scripts=['bin/raspi-mc'],

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import Adafruit_DHT
-from sensor import Sensor
+from raspi_sensor.sensor import Sensor
 
 
 class Dht(Sensor):

@@ -4,18 +4,16 @@
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
 import argparse
+
+from raspi_sensor.main import setup_default_args
 from .pir import PIR
 
 
 def setup_args():
-    ap = argparse.ArgumentParser(prog='raspi-pir', description='RPi.PIR is using PIR sensor, will permanently sense '
-                                                               'for HIGH pin state to detect movement.')
-    ap.add_argument('-p', '--pin', type=int, help='GPIO pin number.')
-    ap.add_argument('--name', type=str, help='Set sensor name for logging.')
-    ap.add_argument('--gpio_bcm', action='store_true', help='Switch PIN to GPIO BCM numbers.')
-    ap.add_argument('--failed_notify', type=int, help='Number of failed sensor reading before alerting.')
-    ap.add_argument('--cycle_sleep', type=float, help='Sleep time in the loop to slow down sensor readings.')
-    ap.add_argument('--mqtt_topic', type=str, help='Set topic for MQTT where sensor will publish data.')
+    ap = argparse.ArgumentParser(prog='raspi-pir',
+                                 description='RPi.PIR is using PIR sensor, will permanently sense for HIGH pin state '
+                                             'to detect movement. For more info visit: https://github.com/ricco386/RPi')
+    setup_default_args(ap)
     ap.add_argument('--change_delay', type=int, help='Delay in seconds to report state change.')
 
     return ap.parse_args()

@@ -1,0 +1,24 @@
+# RPi.DHT systemd service file
+#
+# INSTALL:
+#   - copy raspi-dht.conf tmpfiles configuration into /etc/tmpfiles.d/
+#   - copy raspi-dht.service into /etc/systemd/system/
+#   - run: systemd-tmpfiles --create /etc/tmpfiles.d/raspi-dht.conf
+#   - run: systemctl enable raspi-dht.service && systemctl start raspi-dht.service
+
+[Unit]
+Description=RPi.DHT - Temperature & Humidity monitor
+Documentation=https://github.com/ricco386/RPi
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+PIDFile=/run/raspi-dht/raspi-dht.pid
+ExecStart=/usr/local/bin/raspi-dht 
+Restart=on-failure
+RestartPreventExitStatus=2
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

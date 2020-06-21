@@ -12,7 +12,7 @@ except ImportError:
     from distutils.core import setup
 
 # noinspection PyPep8Naming
-from rpi_dht import __version__ as VERSION
+from raspi_dht import __version__ as VERSION
 
 read = lambda fname: open(os.path.join(os.path.dirname(__file__), fname)).read()
 
@@ -33,7 +33,7 @@ CLASSIFIERS = [
 ]
 
 packages = [
-    'rpi_dht',
+    'raspi_dht',
 ]
 
 setup(
@@ -43,10 +43,10 @@ setup(
     long_description=read('README.rst'),
     author='Richard Kellner',
     author_email='richard.kellner [at] gmail.com',
-    url='https://github.com/ricco386/RPi.DHT',
+    url='https://github.com/ricco386/RPi',
     license='MIT',
     packages=packages,
-    scripts=['bin/rpi-dht'],
+    scripts=['bin/raspi-dht'],
     install_requires=DEPS,
     platforms='any',
     classifiers=CLASSIFIERS,

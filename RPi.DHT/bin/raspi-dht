@@ -5,7 +5,7 @@
 #
 # So, you don't need anything special - no fancy path tricks.
 
-import rpi_dht.main
+import raspi_dht.main
 
-rpi_dht.main.main()
+raspi_dht.main.main()
 
