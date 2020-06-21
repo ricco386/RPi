@@ -1,1 +1,1 @@
-RPi.Sensor>=0.3.0
+RPi.Sensor>=0.4.0
