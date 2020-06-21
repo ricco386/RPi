@@ -33,7 +33,7 @@ class MC(Sensor):
             self.door_state = self.sensor_state
             self.logger.info(self.get_door_state())
 
-            self.nofity(topic=self.mqtt_topic, payload=self.sensor_state)
+            self.nofity(topic='%s/status' % self.mqtt_topic, payload=self.sensor_state)
             zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
             self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME, self.TRAPPER,
                               self.sensor_state)
