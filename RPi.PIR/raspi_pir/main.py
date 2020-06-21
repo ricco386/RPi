@@ -31,7 +31,11 @@ def main():
     if hasattr(params, 'change_delay') and params.change_delay:
         pir.change_delay = params.change_delay
 
-    pir.sense()
+    if hasattr(params, 'status') and params.status:
+        pir.sensor_read()
+        print('Sensor %s state is %s.', pir.NAME, "HIGH" if pir.sensor_state else "LOW")
+    else:
+        pir.sense()
 
 
 if __name__ == "__main__":

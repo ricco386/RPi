@@ -10,12 +10,12 @@ from raspi_dht.dht import Dht
 
 
 def setup_args():
-    ap = argparse.ArgumentParser(prog='rpi-dht',
+    ap = argparse.ArgumentParser(prog='raspi-dht',
                                  description='RPi.DHT is Python implementation for Adafruit_DHT sensor for Raspberry '
                                              'Pi. For more info visit: https://github.com/ricco386/RPi')
+    ap.add_argument('-t', '--temperature', action='store_true', help='Display temperature in *C.')
+    ap.add_argument('-h', '--humidity', action='store_true', help='Display humidity in percent.')
     setup_default_args(ap)
-    ap.add_argument('--temperature', action='store_true', help='Display temperature in *C.')
-    ap.add_argument('--humidity', action='store_true', help='Display humidity in percent.')
 
     return ap.parse_args()
 
