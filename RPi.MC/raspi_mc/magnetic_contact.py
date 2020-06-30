@@ -4,7 +4,7 @@
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
 from raspi_sensor.sensor import Sensor
-from raspi_sensor.zbbix import zabbix_sender
+from raspi_sensor.zabbix import zabbix_sender
 
 
 class MC(Sensor):
@@ -33,7 +33,7 @@ class MC(Sensor):
             self.door_state = self.sensor_state
             self.logger.info(self.get_door_state())
 
-            self.nofity(topic='%s/status' % self.mqtt_topic, payload=self.sensor_state)
+            self.notify(topic='%s/status' % self.mqtt_topic, payload=self.sensor_state)
             zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
             self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME, self.TRAPPER,
                               self.sensor_state)
