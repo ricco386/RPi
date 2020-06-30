@@ -21,7 +21,7 @@ def setup_args():
 
 def main():
     params = setup_args()
-    name = 'Magnetic Contact'
+    name = 'Magnetic_Contact'
 
     if hasattr(params, 'name') and params.name:
         name = params.name

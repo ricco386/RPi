@@ -27,6 +27,7 @@ class MC(Sensor):
     def sensor_read_callback(self):
         self.sensor_state = self.GPIO.input(self.PIN)
 
+    def post_sensor_read_callback(self):
         if self.sensor_state != self.door_state:
             self.logger.debug('Sensor %s changing magnetic contact state from %s to %s', self.NAME, self.door_state,
                               self.sensor_state)
@@ -37,3 +38,5 @@ class MC(Sensor):
             zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
             self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME, self.TRAPPER,
                               self.sensor_state)
+
+        super().post_sensor_read_callback()
