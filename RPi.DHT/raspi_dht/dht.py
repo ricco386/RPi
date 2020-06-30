@@ -25,7 +25,7 @@ class Dht(Sensor):
             self.logger.debug('Sensor %s at allowed_change: %s.', self.NAME, self.allowed_change)
 
     def setup_args(self, params):
-        super.setup_args(params=params)
+        super().setup_args(params=params)
 
         if hasattr(params, 'allowed_change') and params.allowed_change:
             self.allowed_change = params.allowed_change
