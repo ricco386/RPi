@@ -15,6 +15,8 @@ def setup_args():
                                              'Pi. For more info visit: https://github.com/ricco386/RPi')
     ap.add_argument('-t', '--temperature', action='store_true', help='Display temperature in *C.')
     ap.add_argument('-hu', '--humidity', action='store_true', help='Display humidity in percent.')
+    ap.add_argument('--allowed_change', type=int, help='Ignore readings when percentage change is higher than specified'
+                                                       ' allowance.')
     setup_default_args(ap)
 
     return ap.parse_args()
