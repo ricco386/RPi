@@ -3,11 +3,11 @@
 #
 # This software is licensed as described in the README.rst and LICENSE files,
 # which you should have received as part of this distribution.
-from raspi_sensor.sensor import Sensor
+from raspi_sensor.mqtt import MqttSensor
 from raspi_sensor.zabbix import zabbix_sender
 
 
-class MC(Sensor):
+class MC(MqttSensor):
 
     NAME = 'Magnetic_Contact'
     TRAPPER = 'rpi.mc-state'

@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
 import Adafruit_DHT
-from raspi_sensor.sensor import Sensor
+from raspi_sensor.mqtt import MqttSensor
 
 
-class Dht(Sensor):
+class Dht(MqttSensor):
 
     SENSOR = Adafruit_DHT.DHT22
     NAME = 'DHT'
@@ -22,14 +22,14 @@ class Dht(Sensor):
 
         if self.NAME in self.config:
             self.allowed_change = int(self.config.get(self.NAME, 'allowed_change', fallback=self.allowed_change))
-            self.logger.debug('Sensor %s at allowed_change: %s.', self.NAME, self.allowed_change)
+            self.logger.debug('Sensor %s at allowed_change: %s', self.NAME, self.allowed_change)
 
     def setup_args(self, params):
         super().setup_args(params=params)
 
         if hasattr(params, 'allowed_change') and params.allowed_change:
             self.allowed_change = params.allowed_change
-            self.logger.info('Sensor %s at allowed_change: %s (set by script parameter).', self.NAME,
+            self.logger.info('Sensor %s at allowed_change: %s (set by script parameter)', self.NAME,
                              self.allowed_change)
 
     def pre_sensor_read_callback(self):
@@ -55,7 +55,7 @@ class Dht(Sensor):
                 self.logger.warn('Sensor %s read data: %s *C which is difference %s % to previous reading %s *C',
                                  self.NAME, self.temperature, difference, self.previous_temperature)
             else:
-                self.notify(topic='%s/temperature' % self.mqtt_topic, payload="{0:0.1f}".format(self.temperature))
+                self.notify(topic='%s/temperature' % self.topic, payload="{0:0.1f}".format(self.temperature))
 
             difference = self.calculate_change_percentage(self.humidity, self.previous_humidity)
 
@@ -64,7 +64,7 @@ class Dht(Sensor):
                 self.logger.warn('Sensor %s read data: %s % which is difference %s % to previous reading %s %',
                                  self.NAME, self.humidity, difference, self.previous_humidity)
             else:
-                self.notify(topic='%s/humidity' % self.mqtt_topic, payload="{0:0.1f}".format(self.humidity))
+                self.notify(topic='%s/humidity' % self.topic, payload="{0:0.1f}".format(self.humidity))
         else:
             self.FAILED += 1
 

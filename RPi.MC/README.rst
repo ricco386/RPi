@@ -44,7 +44,7 @@ Systemd scripts should be run under **default Raspberry Pi user** (pi), scripts 
 
 **Dependencies:**
 
-- `RPi.Sensor <https://pypi.python.org/pypi/RPi.Sensor>`_ (0.3.0+)
+- `RPi.Sensor <https://pypi.python.org/pypi/RPi.Sensor>`_ (0.5.0+)
 
 Usage
 -----

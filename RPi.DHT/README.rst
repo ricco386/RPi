@@ -34,7 +34,7 @@ Lastly install RPi.DHT appi::
 **Dependencies:**
 
 - `Adafruit_DHT <https://github.com/adafruit/Adafruit_Python_DHT>`_
-- `RPi.Sensor <https://github.com/ricco386/RPi.Sensor>`_ (0.2.2+)
+- `RPi.Sensor <https://github.com/ricco386/RPi.Sensor>`_ (0.5.0+)
 
 License
 -------

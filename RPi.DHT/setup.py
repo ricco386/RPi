@@ -7,7 +7,7 @@ import setuptools
 # noinspection PyPep8Naming
 from raspi_dht import __version__ as VERSION
 
-DEPS = ['Adafruit_Python_DHT', 'RPi.Sensor>=0.4.1']
+DEPS = ['Adafruit_Python_DHT', 'RPi.Sensor>=0.5.0']
 
 CLASSIFIERS = [
     'Environment :: Console',

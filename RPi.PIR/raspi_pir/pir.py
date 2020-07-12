@@ -5,11 +5,11 @@
 # which you should have received as part of this distribution.
 import time
 
-from raspi_sensor.sensor import Sensor
+from raspi_sensor.mqtt import MqttSensor
 from raspi_sensor.zabbix import zabbix_sender
 
 
-class PIR(Sensor):
+class PIR(MqttSensor):
 
     NAME = 'PIR'
     TRAPPER = 'rpi.pir-state'
