@@ -28,7 +28,7 @@ class PIR(MqttSensor):
             self.sensor_state = 0
 
         self.logger.info('Sensor %s state is LOW.', self.NAME)
-        self.notify(topic='%s/status' % self.mqtt_topic, payload=self.sensor_state)
+        self.notify(topic='%s/status' % self.topic, payload=self.sensor_state)
 
     def gpio_setup(self):
         super().gpio_setup()
@@ -51,7 +51,7 @@ class PIR(MqttSensor):
                 self.last_high = time.time()
                 self.low_notif = True
 
-                self.notify(topic='%s/status' % self.mqtt_topic, payload=self.sensor_state)
+                self.notify(topic='%s/status' % self.topic, payload=self.sensor_state)
                 zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
                 self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME,
                                   self.TRAPPER, self.sensor_state)
@@ -59,7 +59,7 @@ class PIR(MqttSensor):
         if not self.sensor_state and self.last_high < time.time() - self.change_delay and self.low_notif:
             self.low_notif = False
 
-            self.notify(topic='%s/status' % self.mqtt_topic, payload=self.sensor_state)
+            self.notify(topic='%s/status' % self.topic, payload=self.sensor_state)
             zabbix_sender(self.config, self.TRAPPER, self.sensor_state)
             self.logger.debug('Sensor %s sent zabbix_sender trapper item %s with value %s.', self.NAME, self.TRAPPER,
                               self.sensor_state)
