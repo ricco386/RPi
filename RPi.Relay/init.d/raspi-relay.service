@@ -1,0 +1,24 @@
+# RPi.Relay systemd service file
+#
+# INSTALL:
+#   - copy raspi-relay.conf tmpfiles configuration into /etc/tmpfiles.d/
+#   - copy raspi-relay.service into /etc/systemd/system/
+#   - run: systemd-tmpfiles --create /etc/tmpfiles.d/raspi-relay.conf
+#   - run: systemctl enable raspi-relay.service && systemctl start raspi-relay.service
+
+[Unit]
+Description=RPi.Relay - Relay state operator
+Documentation=https://github.com/ricco386/RPi/tree/master/RPi.Relay
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+PIDFile=/run/raspi-sensors/raspi-relay.pid
+ExecStart=/home/pi/.local/bin/raspi-relay
+Restart=on-failure
+RestartPreventExitStatus=2
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

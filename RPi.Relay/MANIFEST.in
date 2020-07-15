@@ -1,0 +1,7 @@
+include README.rst
+include LICENSE
+include MANIFEST.in
+include setup.py
+recursive-include raspi_relay *.py
+recursive-include init.d *
+recursive-include bin *
