@@ -22,11 +22,15 @@ def setup_args():
 def main():
     params = setup_args()
     name = 'PIR'
+    config = None
 
     if hasattr(params, 'name') and params.name:
         name = params.name
 
-    pir = PIR(name=name)
+    if hasattr(params, 'config') and params.config:
+        config = params.config
+
+    pir = PIR(name=name, config_path=config)
     pir.setup_args(params)
 
     if hasattr(params, 'change_delay') and params.change_delay:

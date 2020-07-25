@@ -23,13 +23,17 @@ def setup_args():
 
 
 def main():
-    name = 'DHT'
     params = setup_args()
+    name = 'DHT'
+    config = None
 
     if hasattr(params, 'name') and params.name:
         name = params.name
 
-    d = Dht(name=name)
+    if hasattr(params, 'config') and params.config:
+        config = params.config
+
+    d = Dht(name=name, config_path=config)
     d.setup_args(params)
 
     if hasattr(params, 'status') and params.status:

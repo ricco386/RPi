@@ -7,7 +7,7 @@ import setuptools
 # noinspection PyPep8Naming
 from raspi_pir import __version__ as VERSION
 
-DEPS = ['RPi.Sensor']
+DEPS = ['RPi.Sensor>=0.5.3']
 
 CLASSIFIERS = [
     'Environment :: Console',

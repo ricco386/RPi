@@ -22,11 +22,15 @@ def setup_args():
 def main():
     params = setup_args()
     name = 'Magnetic_Contact'
+    config = None
 
     if hasattr(params, 'name') and params.name:
         name = params.name
 
-    mc = MC(name=name)
+    if hasattr(params, 'config') and params.config:
+        config = params.config
+
+    mc = MC(name=name, config_path=config)
     mc.setup_args(params)
 
     if hasattr(params, 'status') and params.status:
